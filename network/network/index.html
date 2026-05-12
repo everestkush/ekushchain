@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EverestKush — EKUSH | Bitcoin Standard Blockchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B;
+  --red-dark: #922B21;
+  --red-light: #E74C3C;
+  --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017;
+  --gold-light: #F0C040;
+  --green: #4ADE80;
+  --blue: #378ADD;
+  --bg: #080810;
+  --bg2: #0E0E18;
+  --bg3: #141420;
+  --bg4: #1A1A28;
+  --bg5: #202030;
+  --border: rgba(255,255,255,0.06);
+  --border-bright: rgba(255,255,255,0.12);
+  --border-red: rgba(192,57,43,0.3);
+  --text: #EEEDF6;
+  --text2: #8E8D9A;
+  --text3: #4E4D5A;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 3rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,16,0.9);
+  backdrop-filter: blur(24px);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.nav-logo .flag { font-size: 1rem; }
+
+.nav-badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  padding: 0.18rem 0.55rem;
+  border-radius: 3px;
+  background: var(--red-glow);
+  border: 1px solid var(--border-red);
+  color: var(--red-light);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text3);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  padding: 0 1.1rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s, background 0.2s;
+  border-left: 1px solid var(--border);
+}
+
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-links li:last-child a { border-right: 1px solid var(--border); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 5rem;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,57,43,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,57,43,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 80%);
+}
+
+.hero-glow {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(192,57,43,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  color: var(--red-light);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: rise 0.9s ease 0.1s forwards;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 14vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: rise 0.9s ease 0.3s forwards;
+}
+
+.hero h1 .line2 {
+  display: block;
+  color: var(--text3);
+  font-size: 0.45em;
+  letter-spacing: 0.3em;
+}
+
+.hero-sub {
+  font-size: 0.95rem;
+  color: var(--text2);
+  font-weight: 300;
+  max-width: 420px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: rise 0.9s ease 0.5s forwards;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: rise 0.9s ease 0.7s forwards;
+  margin-bottom: 4rem;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Live ticker strip */
+.ticker-strip {
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0;
+  animation: rise 0.9s ease 0.9s forwards;
+  background: var(--bg2);
+}
+
+.ticker-cell {
+  padding: 1.1rem 0.75rem;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.ticker-cell:last-child { border-right: none; }
+
+.ticker-val {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+.ticker-val.green { color: var(--green); }
+.ticker-val.gold  { color: var(--gold); }
+.ticker-val.red   { color: var(--red-light); }
+
+.ticker-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.8rem 1.75rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--red-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(192,57,43,0.3);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border-bright);
+}
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
+}
+
+.btn-full { width: 100%; justify-content: center; }
+.btn-sm { font-size: 0.68rem; padding: 0.6rem 1.1rem; }
+
+/* ── LAYOUT ── */
+.page-section {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--red-light);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: var(--border-bright);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+}
+
+.card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card-eyebrow::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.card p {
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* ── INPUTS ── */
+.field { margin-bottom: 0.75rem; }
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+input, select, textarea {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.7rem 0.9rem;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--border-red);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+input::placeholder { color: var(--text3); }
+select option { background: var(--bg3); }
+
+/* ── RESULT BOXES ── */
+.result {
+  margin-top: 0.9rem;
+  padding: 0.9rem;
+  border-radius: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  line-height: 1.75;
+  display: none;
+}
+.result.show { display: block; }
+.result.ok   { background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.18); color: var(--green); }
+.result.err  { background: rgba(192,57,43,0.08); border: 1px solid var(--border-red); color: var(--red-light); }
+.result.info { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
+
+.rrow { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.25rem; flex-wrap: wrap; }
+.rk { color: var(--text3); flex-shrink: 0; }
+.rv { color: var(--text); word-break: break-all; text-align: right; }
+.rv.hi  { color: var(--green); }
+.rv.gold { color: var(--gold-light); }
+.rv.red  { color: var(--red-light); }
+
+.warn-box {
+  background: rgba(212,160,23,0.07);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--gold-light);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
+.secret-box {
+  background: rgba(192,57,43,0.06);
+  border: 1px solid var(--border-red);
+  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  word-break: break-all;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold-light);
+  margin-top: 0.6rem;
+}
+
+.mnemonic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.mnemonic-word {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.35rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.mnemonic-word .wi {
+  color: var(--text3);
+  font-size: 0.62rem;
+  flex-shrink: 0;
+  min-width: 1.2rem;
+}
+
+/* ── BLOCK EXPLORER ── */
+.block-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.18s;
+}
+.block-row:hover { border-color: var(--border-bright); }
+
+.block-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text3);
+  background: var(--bg4);
+  padding: 0.35rem 0.55rem;
+  border-radius: 4px;
+  text-align: center;
+}
+.block-hash { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text2); }
+.block-txs {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--red-light);
+  background: rgba(192,57,43,0.1);
+  padding: 0.25rem 0.55rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* ── TOKEN BARS ── */
+.tbar { margin-bottom: 1rem; }
+.tbar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.tbar-labels span:first-child { color: var(--text2); }
+.tbar-labels span:last-child  { color: var(--text3); }
+.tbar-track {
+  height: 3px;
+  background: var(--bg4);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.tbar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  gap: 0;
+}
+.tab {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  padding: 0.65rem 1.2rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.18s, border-color 0.18s;
+  user-select: none;
+}
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--red-light); border-bottom-color: var(--red); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── STATUS BADGE ── */
+.live-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 0.4rem;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--border); }
+
+/* ── SPINNER ── */
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--border-bright);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TRANSACTION LAYER SECTION ── */
+.tx-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.tx-feature {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text2);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.4;
+}
+.tx-feature .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  color: var(--text3);
+  margin-bottom: 0.5rem;
+}
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--text3);
+  line-height: 2;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 1.25rem; }
+  .nav-links { display: none; }
+  .page-section { padding: 3rem 1.25rem; }
+  .hero { padding: 6rem 1.25rem 3rem; }
+  .ticker-strip { grid-template-columns: repeat(3, 1fr); }
+  .ticker-cell:nth-child(4), .ticker-cell:nth-child(5) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="flag">🇳🇵</span>
+    EverestKush
+    <span class="nav-badge">TESTNET</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#wallet">Wallet</a></li>
+    <li><a href="#hdwallet">HD Wallet</a></li>
+    <li><a href="#txlayer">Transactions</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#explorer">Explorer</a></li>
+    <li><a href="https://github.com/kush010011/everestkush" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <p class="hero-eyebrow">Nepal's Sovereign Blockchain · Bitcoin Standard · Est. 2025</p>
+
+  <h1>
+    EVEREST<br>
+    <span class="line2">KUSH · EKUSH</span>
+  </h1>
+
+  <p class="hero-sub">Built by Nepal. Owned by Nepal.<br>3-second finality · 0.1% fee · 1 Billion supply</p>
+
+  <div class="hero-cta">
+    <a href="#wallet" class="btn btn-primary">Create Wallet</a>
+    <a href="#hdwallet" class="btn btn-ghost">HD Wallet (BIP32/39)</a>
+    <a href="#txlayer" class="btn btn-ghost">Transaction Layer</a>
+    <a href="#explorer" class="btn btn-ghost">Explorer</a>
+  </div>
+
+  <div class="ticker-strip">
+    <div class="ticker-cell">
+      <div class="ticker-val" id="stat-blocks">—</div>
+      <div class="ticker-label">Blocks</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val green" id="stat-status">—</div>
+      <div class="ticker-label">Chain</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val" id="stat-pending">—</div>
+      <div class="ticker-label">Pending TXs</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val gold" id="stat-difficulty">—</div>
+      <div class="ticker-label">Difficulty</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val" id="stat-supply">—</div>
+      <div class="ticker-label">Supply</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── HD WALLET ── -->
+<section class="page-section" id="hdwallet">
+  <p class="section-eyebrow">BIP32 · BIP39 · BIP44</p>
+  <h2 class="section-title">HD WALLET</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">Generate Mnemonic · BIP39</div>
+      <h3>Seed Phrase</h3>
+      <p>One phrase backs up ALL your wallets. Write it on paper.</p>
+      <div class="field">
+        <label>Strength</label>
+        <select id="mnemonic-words">
+          <option value="12">12 words — 128 bit</option>
+          <option value="24">24 words — 256 bit</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="generateMnemonic()">Generate Seed Phrase</button>
+      <div id="mnemonic-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Restore Wallet · BIP39</div>
+      <h3>Recover from Seed</h3>
+      <p>Enter your 12 or 24 word phrase to recover your wallet.</p>
+      <div class="field">
+        <label>Seed Phrase</label>
+        <textarea id="restore-mnemonic" rows="3" placeholder="word1 word2 word3 ..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="restoreWallet()">Restore Wallet</button>
+      <div id="restore-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div class="card">
+      <div class="card-eyebrow">Derive Addresses · BIP44</div>
+      <h3>Multiple Addresses</h3>
+      <p>Path: m/44'/1989'/0'/0/index</p>
+      <div class="field">
+        <label>Count (max 50)</label>
+        <input type="number" id="address-count" value="5" min="1" max="50">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="generateAddresses()">Generate Addresses</button>
+      <div id="addresses-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Watch-Only · xpub</div>
+      <h3>Shareable Public Key</h3>
+      <p>Share your xpub to let others monitor wallets without spending.</p>
+      <button class="btn btn-ghost btn-full" onclick="getXpub()">Get xpub Key</button>
+      <div id="xpub-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── WALLET & SEND ── -->
+<section class="page-section" id="wallet">
+  <p class="section-eyebrow">Node Interface</p>
+  <h2 class="section-title">WALLET & SEND</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">New Wallet</div>
+      <h3>Generate EKUSH Wallet</h3>
+      <p>Creates a new secp256k1 keypair with a Base58 address.</p>
+      <button class="btn btn-primary btn-full" onclick="createWallet()">Generate Wallet</button>
+      <div id="wallet-result" class="result"></div>
+      <div class="warn-box">⚠ Save your private key now. There is no recovery mechanism.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Balance</div>
+      <h3>Check Balance</h3>
+      <p>Query any address balance from the UTXO chainstate.</p>
+      <div class="field">
+        <label>Address</label>
+        <input type="text" id="balance-address" placeholder="EKUSH address">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="checkBalance()">Get Balance</button>
+      <div id="balance-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="card" style="max-width:560px;margin:1rem auto 0;">
+    <div class="card-eyebrow">Send · Remittance</div>
+    <h3>Transfer EKUSH</h3>
+    <div class="field"><label>Private Key</label><input type="text" id="send-privkey" placeholder="hex private key"></div>
+    <div class="field"><label>Recipient Address</label><input type="text" id="send-recipient" placeholder="EKUSH address"></div>
+    <div class="field"><label>Amount (EKUSH)</label><input type="number" id="send-amount" placeholder="0.00" step="any" oninput="updateFeePreview()"></div>
+    <div id="fee-preview" style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text3);min-height:1.2em;margin-bottom:0.75rem;"></div>
+    <button class="btn btn-primary btn-full" onclick="sendTransaction()">Send EKUSH</button>
+    <div id="send-result" class="result"></div>
+    <div class="warn-box">⚠ Transactions are irreversible. Verify the recipient address.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── TRANSACTION LAYER ── -->
+<section class="page-section" id="txlayer">
+  <p class="section-eyebrow">Bitcoin Standard · BIP16 · BIP65 · BIP68</p>
+  <h2 class="section-title">TRANSACTION LAYER</h2>
+
+  <div class="tx-feature-grid">
+    <div class="tx-feature"><div class="dot"></div>P2SH Multisig (M-of-N)</div>
+    <div class="tx-feature"><div class="dot"></div>OP_RETURN (80 bytes)</div>
+    <div class="tx-feature"><div class="dot"></div>CLTV Timelock (BIP65)</div>
+    <div class="tx-feature"><div class="dot"></div>CSV Timelock (BIP68)</div>
+    <div class="tx-feature"><div class="dot"></div>Dust Limit Enforcement</div>
+    <div class="tx-feature"><div class="dot"></div>nLockTime + nSequence</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this,'tab-opreturn')">OP_RETURN</div>
+    <div class="tab" onclick="switchTab(this,'tab-multisig')">Multisig</div>
+    <div class="tab" onclick="switchTab(this,'tab-timelock')">Timelock</div>
+    <div class="tab" onclick="switchTab(this,'tab-dust')">Dust Limit</div>
+  </div>
+
+  <!-- OP_RETURN tab -->
+  <div id="tab-opreturn" class="tab-panel active">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">OP_RETURN · On-chain Data</div>
+      <h3>Embed Data on Chain</h3>
+      <p>Store up to 80 bytes of arbitrary data permanently on the EKUSH blockchain.</p>
+      <div class="field"><label>Private Key</label><input type="text" id="opreturn-privkey" placeholder="hex private key"></div>
+      <div class="field">
+        <label>Data to Embed <span id="opreturn-counter" style="float:right;color:var(--text3);">0 / 80 bytes</span></label>
+        <input type="text" id="opreturn-data" placeholder="Hello EverestKush!" oninput="updateOpReturnCounter()">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="submitOpReturn()">Embed on Chain</button>
+      <div id="opreturn-result" class="result"></div>
+    </div>
+  </div>
+
+  <!-- Multisig tab -->
+  <div id="tab-multisig" class="tab-panel">
+    <div class="card" style="max-width:620px;">
+      <div class="card-eyebrow">P2SH Multisig · BIP16</div>
+      <h3>Create M-of-N Address</h3>
+      <p>Generate a P2SH address that requires M out of N signatures to spend.</p>
+      <div class="field"><label>Required Signatures (M)</label><input type="number" id="multisig-m" value="2" min="1" max="15"></div>
+      <div class="field">
+        <label>Public Keys (one per line)</label>
+        <textarea id="multisig-keys" rows="4" placeholder="03a1b2c3...&#10;03b2c3d4...&#10;03c3d4e5..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="createMultisig()">Create Multisig Address</button>
+      <div id="multisig-result" class="result"></div>
+    </div>
+  </div>
+
+  <!-- Timelock tab -->
+  <div id="tab-timelock" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Timelock · CLTV / CSV</div>
+      <h3>Time-Locked Transaction</h3>
+      <p>Lock funds until a specific block height (CLTV) or for a relative number of blocks (CSV).</p>
+      <div class="field"><label>Private Key</label><input type="text" id="timelock-privkey" placeholder="hex private key"></div>
+      <div class="field"><label>Recipient</label><input type="text" id="timelock-recipient" placeholder="EKUSH address"></div>
+      <div class="field"><label>Amount (EKUSH)</label><input type="number" id="timelock-amount" placeholder="0.00" step="any"></div>
+      <div class="field">
+        <label>Lock Type</label>
+        <select id="timelock-type" onchange="updateTimelockLabel()">
+          <option value="cltv">CLTV — absolute block height</option>
+          <option value="csv">CSV — relative block count</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="timelock-input-label">Lock Until Block</label>
+        <input type="number" id="timelock-value" placeholder="e.g. 1000">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="createTimelock()">Create Timelocked TX</button>
+      <div id="timelock-result" class="result"></div>
+    </div>
+  </div>
+
+  <!-- Dust tab -->
+  <div id="tab-dust" class="tab-panel">
+    <div class="card" style="max-width:480px;">
+      <div class="card-eyebrow">Dust Limit · Bitcoin Standard</div>
+      <h3>Dust Limit Policy</h3>
+      <p>Outputs below the dust threshold are rejected to prevent UTXO set bloat.</p>
+      <button class="btn btn-ghost btn-full" onclick="fetchDustLimit()">Check Dust Policy</button>
+      <div id="dust-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── NETWORK ── -->
+<section class="page-section" id="network">
+  <p class="section-eyebrow">Bitcoin Standard Features</p>
+  <h2 class="section-title">NETWORK STATUS</h2>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-eyebrow">Difficulty Adjustment</div>
+      <div class="rrow"><span class="rk">Current Difficulty</span><span class="rv" id="net-diff">—</span></div>
+      <div class="rrow"><span class="rk">Target Block Time</span><span class="rv">3 seconds</span></div>
+      <div class="rrow"><span class="rk">Blocks to Adjustment</span><span class="rv" id="net-adjust">—</span></div>
+      <div class="rrow"><span class="rk">Standard</span><span class="rv gold">Bitcoin</span></div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Reward Halving</div>
+      <div class="rrow"><span class="rk">Current Reward</span><span class="rv hi" id="halving-reward">—</span></div>
+      <div class="rrow"><span class="rk">Next Halving</span><span class="rv" id="halving-next">—</span></div>
+      <div class="rrow"><span class="rk">Blocks to Halving</span><span class="rv" id="halving-blocks">—</span></div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Mempool</div>
+      <div class="rrow"><span class="rk">Pending TXs</span><span class="rv" id="mempool-pending">—</span></div>
+      <div class="rrow"><span class="rk">Max Size</span><span class="rv" id="mempool-max">—</span></div>
+      <div class="rrow"><span class="rk">Usage</span><span class="rv" id="mempool-usage">—</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── EXPLORER ── -->
+<section class="page-section" id="explorer">
+  <p class="section-eyebrow">Block Explorer</p>
+  <h2 class="section-title">CHAIN EXPLORER</h2>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    <button class="btn btn-ghost btn-sm" onclick="loadExplorer()">↻ Refresh</button>
+    <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text3);">
+      <span class="live-dot"></span>Auto-refresh every 15s
+    </span>
+  </div>
+  <div id="explorer-blocks"><div style="padding:2rem;text-align:center;color:var(--text3);font-family:var(--font-mono);font-size:0.8rem;">Loading chain...</div></div>
+</section>
+
+<hr class="divider">
+
+<!-- ── TOKENOMICS ── -->
+<section class="page-section" id="tokenomics">
+  <p class="section-eyebrow">Token Economics</p>
+  <h2 class="section-title">EKUSH SUPPLY</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">Distribution</div>
+      <div class="tbar"><div class="tbar-labels"><span>Public Allocation</span><span>300M · 30%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:30%;background:var(--red);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Validator Rewards</span><span>300M · 30%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:20%;background:var(--blue);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Development Fund</span><span>150M · 15%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:15%;background:#7F77DD;"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Ecosystem Fund</span><span>150M · 15%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:15%;background:var(--gold);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Crisis Reserve 🔒</span><span>100M · 10%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:10%;background:var(--green);"></div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Parameters</div>
+      <div class="rrow"><span class="rk">Total Supply</span><span class="rv">1,000,000,000 EKUSH</span></div>
+      <div class="rrow"><span class="rk">Block Time</span><span class="rv hi">3 seconds</span></div>
+      <div class="rrow"><span class="rk">TX Fee</span><span class="rv hi">0.1%</span></div>
+      <div class="rrow"><span class="rk">Consensus</span><span class="rv">DPoS</span></div>
+      <div class="rrow"><span class="rk">Max Validators</span><span class="rv">21 elected</span></div>
+      <div class="rrow"><span class="rk">Curve</span><span class="rv">secp256k1</span></div>
+      <div class="rrow"><span class="rk">HD Standards</span><span class="rv gold">BIP32 · BIP39 · BIP44</span></div>
+      <div class="rrow"><span class="rk">TX Standards</span><span class="rv gold">BIP16 · BIP65 · BIP68</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<footer>
+  <div class="footer-brand">EverestKush</div>
+  <div class="footer-meta">
+    🇳🇵 BUILT BY NEPAL · OWNED BY NEPAL · BITCOIN STANDARD<br>
+    1,000,000,000 EKUSH · 21 Validators · 0.1% Fee · 3-Second Finality
+  </div>
+</footer>
+
+<script>
+const API = 'https://192.168.23.5:5000';
+
+// ── Utilities ──
+function show(id, type, html) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = `result show ${type}`;
+  el.innerHTML = html;
+}
+function row(k, v, cls='') {
+  return `<div class="rrow"><span class="rk">${k}</span><span class="rv ${cls}">${v}</span></div>`;
+}
+function short(s, n=28) { return s && s.length > n ? s.substring(0,n)+'…' : s; }
+
+async function api(path, opts={}) {
+  const r = await fetch(API + path, opts);
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
+  return d;
+}
+
+function post(path, body) {
+  return fetch(API + path, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  }).then(r => r.json().then(d => ({ ok: r.ok, data: d })));
+}
+
+// ── Tabs ──
+function switchTab(el, panelId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ── Fee preview ──
+function updateFeePreview() {
+  const amt = parseFloat(document.getElementById('send-amount').value) || 0;
+  const el = document.getElementById('fee-preview');
+  el.textContent = amt > 0
+    ? `Fee: ${(amt*0.001).toFixed(4)} EKUSH (0.1%)  ·  Total: ${(amt*1.001).toFixed(4)} EKUSH`
+    : '';
+}
+
+// ── OP_RETURN counter ──
+function updateOpReturnCounter() {
+  const val = document.getElementById('opreturn-data').value;
+  const bytes = new TextEncoder().encode(val).length;
+  const el = document.getElementById('opreturn-counter');
+  el.textContent = `${bytes} / 80 bytes`;
+  el.style.color = bytes > 80 ? 'var(--red-light)' : 'var(--text3)';
+}
+
+// ── Timelock label ──
+function updateTimelockLabel() {
+  const type = document.getElementById('timelock-type').value;
+  document.getElementById('timelock-input-label').textContent =
+    type === 'cltv' ? 'Lock Until Block Height' : 'Lock For N Blocks';
+  document.getElementById('timelock-value').placeholder =
+    type === 'cltv' ? 'e.g. 1000' : 'e.g. 10';
+}
+
+// ── HD Wallet ──
+async function generateMnemonic() {
+  const words = document.getElementById('mnemonic-words').value;
+  try {
+    const d = await api(`/wallet/bip39/generate?words=${words}`);
+    const ws = d.mnemonic.split(' ');
+    const grid = ws.map((w,i) =>
+      `<div class="mnemonic-word"><span class="wi">${i+1}</span>${w}</div>`
+    ).join('');
+    show('mnemonic-result', 'ok',
+      `<div class="mnemonic-grid">${grid}</div>` +
+      row('Word Count', d.word_count) +
+      row('Standard', 'BIP39') +
+      `<div class="warn-box" style="margin-top:0.75rem;">⚠️ Write these words on paper. Store offline. Anyone with these words can access your funds.</div>`
+    );
+  } catch(e) { show('mnemonic-result', 'err', e.message); }
+}
+
+async function restoreWallet() {
+  const mnemonic = document.getElementById('restore-mnemonic').value.trim();
+  if (!mnemonic) return;
+  try {
+    const { ok, data: d } = await post('/wallet/bip39/restore', { mnemonic });
+    if (ok) {
+      show('restore-result', 'ok',
+        row('Status', 'Restored', 'hi') +
+        row('Master Address', short(d.master_address, 32)) +
+        `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">XPUB (shareable)</div>` +
+        `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.2rem;">${d.xpub}</div>` +
+        `<div class="warn-box" style="margin-top:0.75rem;">⚠️ xprv is your master private key. Never share it.</div>`
+      );
+    } else {
+      show('restore-result', 'err', d.error || 'Restore failed');
+    }
+  } catch(e) { show('restore-result', 'err', e.message); }
+}
+
+async function generateAddresses() {
+  const count = document.getElementById('address-count').value;
+  try {
+    const d = await api(`/wallet/hd/addresses/${count}`);
+    let html = `<div style="margin-bottom:0.6rem;font-size:0.65rem;color:var(--text3);">Seed: ${short(d.mnemonic, 50)}</div>`;
+    d.addresses.forEach(a => {
+      html += `<div style="padding:0.45rem 0;border-bottom:1px solid var(--border);">
+        <span style="color:var(--text3);margin-right:0.5rem;">#${a.index}</span>${a.address}
+        <span style="color:var(--text3);font-size:0.65rem;margin-left:0.5rem;">${a.path}</span>
+      </div>`;
+    });
+    show('addresses-result', 'info', html);
+  } catch(e) { show('addresses-result', 'err', e.message); }
+}
+
+async function getXpub() {
+  try {
+    const d = await api('/wallet/hd/xpub');
+    show('xpub-result', 'info',
+      `<div style="word-break:break-all;margin-bottom:0.6rem;">${d.xpub}</div>` +
+      row('Type', 'Extended Public Key') +
+      `<div class="warn-box" style="margin-top:0.6rem;">🔓 Safe to share. Cannot spend — only view.</div>`
+    );
+  } catch(e) { show('xpub-result', 'err', e.message); }
+}
+
+// ── Basic Wallet ──
+async function createWallet() {
+  try {
+    const d = await api('/wallet/new');
+    show('wallet-result', 'info',
+      row('Address', d.address) +
+      row('Public Key', short(d.public_key, 30)) +
+      `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">PRIVATE KEY — COPY NOW</div>` +
+      `<div class="secret-box">${d.private_key}</div>`
+    );
+  } catch(e) { show('wallet-result', 'err', e.message); }
+}
+
+async function checkBalance() {
+  const addr = document.getElementById('balance-address').value.trim();
+  if (!addr) return;
+  try {
+    const d = await api(`/balance/${addr}`);
+    show('balance-result', d.balance > 0 ? 'ok' : 'info',
+      row('Address', short(d.address, 24)) +
+      row('Balance', `${d.balance.toLocaleString()} EKUSH`, 'hi')
+    );
+  } catch(e) { show('balance-result', 'err', e.message); }
+}
+
+async function sendTransaction() {
+  const pk  = document.getElementById('send-privkey').value.trim();
+  const to  = document.getElementById('send-recipient').value.trim();
+  const amt = parseFloat(document.getElementById('send-amount').value);
+  if (!pk || !to || !amt) { alert('Fill all fields'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction', { private_key: pk, recipient: to, amount: amt });
+    if (ok) {
+      show('send-result', 'ok',
+        row('Status', 'Added to mempool', 'hi') +
+        row('TX Hash', short(d.hash, 32)) +
+        row('Amount', `${amt} EKUSH`) +
+        row('Fee', `${(amt*0.001).toFixed(4)} EKUSH`)
+      );
+    } else {
+      show('send-result', 'err', d.error || 'Transaction failed');
+    }
+  } catch(e) { show('send-result', 'err', e.message); }
+}
+
+// ── Transaction Layer ──
+async function submitOpReturn() {
+  const pk   = document.getElementById('opreturn-privkey').value.trim();
+  const data = document.getElementById('opreturn-data').value.trim();
+  if (!pk || !data) { alert('Fill all fields'); return; }
+  const bytes = new TextEncoder().encode(data).length;
+  if (bytes > 80) { alert('Data exceeds 80 bytes'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction/opreturn', { private_key: pk, data });
+    if (ok) {
+      show('opreturn-result', 'ok',
+        row('Status', 'Success', 'hi') +
+        row('TX Hash', short(d.hash || d.txid, 32)) +
+        row('Data Embedded', d.op_return || data) +
+        row('Bytes', bytes + ' / 80') +
+        row('Standard', 'Bitcoin OP_RETURN')
+      );
+    } else {
+      show('opreturn-result', 'err', d.error || 'Failed');
+    }
+  } catch(e) { show('opreturn-result', 'err', e.message); }
+}
+
+async function createMultisig() {
+  const m = parseInt(document.getElementById('multisig-m').value);
+  const keys = document.getElementById('multisig-keys').value
+    .split('\n').map(k => k.trim()).filter(Boolean);
+  if (!keys.length) { alert('Enter public keys'); return; }
+  try {
+    const { ok, data: d } = await post('/wallet/multisig', { required: m, public_keys: keys });
+    if (ok) {
+      show('multisig-result', 'ok',
+        row('Address', d.address) +
+        row('Type', d.type || 'P2SH_Multisig') +
+        row('Required Sigs', `${d.required_signatures || d.required} of ${d.total_keys || d.total}`) +
+        row('Standard', d.standard || 'BIP16') +
+        `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">Redeem Script</div>` +
+        `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.2rem;">${d.redeem_script}</div>`
+      );
+    } else {
+      show('multisig-result', 'err', d.error || 'Failed');
+    }
+  } catch(e) { show('multisig-result', 'err', e.message); }
+}
+
+async function createTimelock() {
+  const pk      = document.getElementById('timelock-privkey').value.trim();
+  const to      = document.getElementById('timelock-recipient').value.trim();
+  const amount  = parseFloat(document.getElementById('timelock-amount').value);
+  const type    = document.getElementById('timelock-type').value;
+  const value   = parseInt(document.getElementById('timelock-value').value);
+  if (!pk || !to || !amount || !value) { alert('Fill all fields'); return; }
+  const body = { private_key: pk, recipient: to, amount };
+  if (type === 'cltv') body.lock_until = value; else body.lock_for = value;
+  try {
+    const { ok, data: d } = await post('/transaction/timelock', body);
+    if (ok) {
+      show('timelock-result', 'ok',
+        row('Status', 'Success', 'hi') +
+        row('TX Hash', short(d.txid, 32)) +
+        row('Lock Type', d.lock_type) +
+        row('Spendable At Block', d.spendable_at_block) +
+        row('Blocks Remaining', d.blocks_remaining) +
+        row('Standard', d.standard)
+      );
+    } else {
+      show('timelock-result', 'err', d.error || 'Failed');
+    }
+  } catch(e) { show('timelock-result', 'err', e.message); }
+}
+
+async function fetchDustLimit() {
+  try {
+    const d = await api('/transaction/dustlimit');
+    show('dust-result', 'info',
+      row('Dust Limit', `${d.dust_limit_satoshis || (d.dust_limit * 1e8)} satoshis`) +
+      row('In EKUSH', d.dust_limit_ekush || d.dust_limit) +
+      row('OP_RETURN Value', '0 (exempt)') +
+      row('Policy', d.policy || d.description) +
+      row('Standard', d.standard)
+    );
+  } catch(e) { show('dust-result', 'err', e.message); }
+}
+
+// ── Explorer ──
+async function loadExplorer() {
+  const container = document.getElementById('explorer-blocks');
+  try {
+    const d = await api('/chain');
+    if (!d.chain || !d.chain.length) {
+      container.innerHTML = '<div style="color:var(--text3);text-align:center;padding:2rem;">No blocks yet</div>';
+      return;
+    }
+    const validBadge = d.valid
+      ? `<span style="color:var(--green);">● VALID</span>`
+      : `<span style="color:var(--red-light);">● INVALID</span>`;
+    let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;font-family:var(--font-mono);font-size:0.72rem;">
+      <span style="color:var(--text2);">${d.length} blocks</span>${validBadge}
+    </div>`;
+    [...d.chain].reverse().forEach(b => {
+      html += `<div class="block-row">
+        <div class="block-num">#${b.index}</div>
+        <div><div class="block-hash">${short(b.hash, 44)}</div></div>
+        <div class="block-txs">${b.transactions} TX</div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<div style="color:var(--red-light);font-family:var(--font-mono);font-size:0.78rem;">Cannot reach node: ${e.message}</div>`;
+  }
+}
+
+// ── Network Stats ──
+async function loadStats() {
+  try {
+    const [stats, diff, supply, mempool] = await Promise.allSettled([
+      api('/stats'),
+      api('/difficulty'),
+      api('/supply'),
+      api('/mempool/stats')
+    ]);
+
+    if (stats.status === 'fulfilled') {
+      const s = stats.value;
+      document.getElementById('stat-blocks').textContent  = s.chain_length;
+      document.getElementById('stat-pending').textContent = s.pending_transactions;
+      const statusEl = document.getElementById('stat-status');
+      statusEl.textContent = s.chain_valid ? 'VALID' : 'INVALID';
+      statusEl.className = 'ticker-val ' + (s.chain_valid ? 'green' : 'red');
+    }
+    if (diff.status === 'fulfilled') {
+      const d = diff.value;
+      document.getElementById('stat-difficulty').textContent = d.current_difficulty;
+      const nd = document.getElementById('net-diff');
+      if (nd) nd.textContent = d.current_difficulty;
+      const na = document.getElementById('net-adjust');
+      if (na) na.textContent = `${d.blocks_until_adjustment} blocks`;
+    }
+    if (supply.status === 'fulfilled') {
+      const s = supply.value;
+      document.getElementById('stat-supply').textContent = (s.circulating_supply/1e6).toFixed(1)+'M';
+      const hr = document.getElementById('halving-reward');
+      const hn = document.getElementById('halving-next');
+      const hb = document.getElementById('halving-blocks');
+      if (hr) hr.textContent = s.current_reward + ' EKUSH';
+      if (hn) hn.textContent = `#${s.next_halving_block}`;
+      if (hb) hb.textContent = s.blocks_to_next_halving;
+    }
+    if (mempool.status === 'fulfilled') {
+      const m = mempool.value;
+      const mp = document.getElementById('mempool-pending');
+      const mm = document.getElementById('mempool-max');
+      const mu = document.getElementById('mempool-usage');
+      if (mp) mp.textContent = m.pending_transactions;
+      if (mm) mm.textContent = m.max_size;
+      if (mu) mu.textContent = m.usage_percent.toFixed(1) + '%';
+    }
+  } catch(e) { console.warn('Stats error', e); }
+}
+
+// Init
+loadStats();
+loadExplorer();
+setInterval(loadStats, 15000);
+setInterval(loadExplorer, 15000);
+</script>
+</body>
+</html>
+

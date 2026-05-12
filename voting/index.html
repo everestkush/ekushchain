@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKUSH • Complete Governance Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #e0e0e0; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #ffd700, #ffaa00); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .tagline { color: #888; font-size: 14px; margin-top: 8px; }
+        .card { background: #111118; border: 1px solid #222230; border-radius: 20px; padding: 28px; margin-bottom: 24px; }
+        .card-title { font-size: 20px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .card-title .step { background: #ffd700; color: #0a0a0f; width: 28px; height: 28px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+        input, select, textarea { width: 100%; padding: 14px 16px; background: #1a1a24; border: 1px solid #2a2a34; border-radius: 12px; color: #fff; font-size: 14px; font-family: monospace; margin: 12px 0; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #ffd700; }
+        button { background: linear-gradient(135deg, #ffd700, #ffaa00); border: none; padding: 12px 24px; border-radius: 40px; font-weight: 600; font-size: 14px; cursor: pointer; color: #0a0a0f; transition: all 0.2s; }
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px #ffd70040; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 10px 20px; background: #1a1a24; border-radius: 40px; cursor: pointer; color: #888; transition: all 0.2s; }
+        .tab.active { background: #ffd70020; color: #ffd700; border: 1px solid #ffd700; }
+        .tier-card { display: inline-block; width: calc(33% - 20px); margin: 10px; padding: 20px; background: #1a1a24; border-radius: 16px; border: 1px solid #ffd70020; vertical-align: top; }
+        .tier-price { font-size: 28px; font-weight: bold; color: #ffd700; }
+        .tier-name { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+        .message { padding: 14px 18px; border-radius: 12px; margin: 16px 0; font-size: 14px; }
+        .message-success { background: #00ff8820; border-left: 3px solid #00ff88; color: #00ff88; }
+        .message-error { background: #ff444420; border-left: 3px solid #ff4444; color: #ff8888; }
+        .message-info { background: #ffd70020; border-left: 3px solid #ffd700; color: #ffd700; }
+        .message-warning { background: #ff880020; border-left: 3px solid #ff8800; color: #ffaa44; }
+        .key-box { background: #0a0a0f; border: 1px solid #ffd700; border-radius: 12px; padding: 16px; margin: 16px 0; font-family: monospace; font-size: 12px; word-break: break-all; }
+        .copy-btn { background: #2a2a34; color: #ffd700; padding: 6px 12px; font-size: 12px; border-radius: 6px; margin-left: 10px; cursor: pointer; display: inline-block; border: none; }
+        .copy-btn:hover { background: #ffd700; color: #0a0a0f; }
+        .result-item { margin: 16px 0; }
+        .result-bar { background: #1a1a24; border-radius: 20px; overflow: hidden; height: 32px; }
+        .result-fill { background: linear-gradient(90deg, #ffd700, #ffaa00); height: 100%; border-radius: 20px; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; color: #0a0a0f; font-weight: 600; }
+        .vote-status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-left: 10px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        @media (max-width: 768px) { .tier-card { width: 100%; margin: 10px 0; } .grid-2 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">EKUSH Governance Platform</div>
+        <div class="tagline">Secure • Transparent • One Person = One Vote</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('create')">🗳️ Create Election</div>
+        <div class="tab" onclick="showTab('vote')">✅ Cast Vote</div>
+        <div class="tab" onclick="showTab('governance')">🏛️ Governance</div>
+        <div class="tab" onclick="showTab('results')">📊 Results</div>
+        <div class="tab" onclick="showTab('register')">🆔 National ID</div>
+        <div class="tab" onclick="showTab('wallet')">💳 Wallet</div>
+    </div>
+
+    <!-- Create Election -->
+    <div id="tabCreate" class="card">
+        <div class="card-title"><span class="step">1</span> Create New Election</div>
+        <div style="text-align: center;">
+            <div class="tier-card">
+                <div class="tier-name">Community</div>
+                <div class="tier-price">888 EKUSH</div>
+                <div>✓ 10,000 voters max</div>
+                <div>✓ 7 days duration</div>
+                <div>✓ Basic results</div>
+                <button onclick="showCreateForm('community')">Select</button>
+            </div>
+            <div class="tier-card">
+                <div class="tier-name">Organization</div>
+                <div class="tier-price">8,888 EKUSH</div>
+                <div>✓ 100,000 voters max</div>
+                <div>✓ 30 days duration</div>
+                <div>✓ Live WebSocket</div>
+                <button onclick="showCreateForm('organization')">Select</button>
+            </div>
+            <div class="tier-card">
+                <div class="tier-name">National</div>
+                <div class="tier-price">28,000 EKUSH</div>
+                <div>✓ Unlimited voters</div>
+                <div>✓ 90 days duration</div>
+                <div>✓ National ID required</div>
+                <button onclick="showCreateForm('national')">Select</button>
+            </div>
+        </div>
+        <div id="createForm" style="display: none; margin-top: 20px;"></div>
+        <div id="electionResult"></div>
+    </div>
+
+    <!-- Cast Vote -->
+    <div id="tabVote" class="card" style="display: none;">
+        <div class="card-title"><span class="step">2</span> Cast Your Vote</div>
+        <div class="grid-2">
+            <div>
+                <h3>Open Election (No EKUSH required)</h3>
+                <input type="text" id="openElectionId" placeholder="Election ID">
+                <input type="text" id="openWallet" placeholder="Your Wallet Address">
+                <input type="text" id="openChoice" placeholder="Your Choice (Option A/B/C)">
+                <input type="text" id="openPrivateKey" placeholder="Private Key">
+                <button onclick="voteOpen()">🗳️ Vote in Open Election</button>
+                <div id="openVoteResult"></div>
+            </div>
+            <div>
+                <h3>National Election (ID Required)</h3>
+                <input type="text" id="nationalElectionId" placeholder="Election ID">
+                <input type="text" id="nationalId" placeholder="National ID (10-12 digits)">
+                <input type="text" id="nationalChoice" placeholder="Your Choice">
+                <input type="text" id="nationalPrivateKey" placeholder="Private Key">
+                <button onclick="voteNational()">🗳️ Vote with National ID</button>
+                <div id="nationalVoteResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Governance Proposals -->
+    <div id="tabGovernance" class="card" style="display: none;">
+        <div class="card-title"><span class="step">3</span> Governance Proposals</div>
+        <p>EKUSH holders vote with weight = your EKUSH balance. Need 888+ EKUSH to propose.</p>
+        <input type="text" id="propTitle" placeholder="Proposal Title">
+        <textarea id="propDesc" rows="3" placeholder="Description"></textarea>
+        <input type="text" id="propProposer" placeholder="Your Wallet Address">
+        <select id="propType">
+            <option value="parameter_change">Parameter Change</option>
+            <option value="feature_vote">Feature Vote</option>
+            <option value="treasury_spend">Treasury Spend</option>
+        </select>
+        <button onclick="createProposal()">Create Proposal</button>
+        <h3 style="margin-top: 20px;">Active Proposals</h3>
+        <div id="proposalsList"></div>
+        <div id="governanceResult"></div>
+    </div>
+
+    <!-- Results -->
+    <div id="tabResults" class="card" style="display: none;">
+        <div class="card-title"><span class="step">4</span> Live Results</div>
+        <input type="text" id="resultId" placeholder="Election ID or Proposal ID">
+        <button onclick="getResults()">Get Results</button>
+        <div id="results"></div>
+    </div>
+
+    <!-- National ID Registration -->
+    <div id="tabRegister" class="card" style="display: none;">
+        <div class="card-title"><span class="step">5</span> National ID Verification</div>
+        <p>Register your National ID to vote in government elections. One ID = One Vote.</p>
+        <div class="grid-2">
+            <div>
+                <h3>Register New Voter</h3>
+                <input type="text" id="regNationalId" placeholder="National ID (10-12 digits)">
+                <input type="text" id="regWallet" placeholder="EKUSH Wallet Address">
+                <input type="text" id="regFullName" placeholder="Full Name">
+                <input type="text" id="regDob" placeholder="Date of Birth (YYYY-MM-DD)">
+                <input type="text" id="regDistrict" placeholder="District">
+                <input type="text" id="regPhone" placeholder="Phone Number">
+                <button onclick="registerNationalId()">Register Voter</button>
+                <div id="registerResult"></div>
+            </div>
+            <div>
+                <h3>Check Verification Status</h3>
+                <input type="text" id="checkNationalId" placeholder="National ID">
+                <button onclick="verifyNationalId()">Check Status</button>
+                <div id="verifyResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Wallet -->
+    <div id="tabWallet" class="card" style="display: none;">
+        <div class="card-title"><span class="step">6</span> Create Wallet</div>
+        <button onclick="createWallet()">✨ Generate New Wallet</button>
+        <div id="walletInfo"></div>
+        <div class="message message-warning">⚠️ SAVE YOUR PRIVATE KEY! This is the ONLY time it's shown.</div>
+    </div>
+</div>
+
+<script>
+    const API_URL = "https://api.everestkush.com";
+    const API_KEY = "CHANGE_ME";
+    let currentTier = null;
+
+    function showTab(tabName) {
+        const tabs = ['create', 'vote', 'governance', 'results', 'register', 'wallet'];
+        tabs.forEach(t => {
+            const el = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+            if (el) el.style.display = t === tabName ? 'block' : 'none';
+        });
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        if (event && event.target) event.target.classList.add('active');
+        if (tabName === 'governance') loadProposals();
+    }
+
+    function copyToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => alert('✓ Copied!')).catch(() => fallbackCopy(text));
+        } else { fallbackCopy(text); }
+    }
+    function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        alert('✓ Copied!');
+    }
+
+    function showCreateForm(tier) {
+        currentTier = tier;
+        const fees = { community: 888, organization: 8888, national: 28000 };
+        const maxDays = { community: 7, organization: 30, national: 90 };
+        document.getElementById('createForm').innerHTML = `
+            <input type="text" id="electionTitle" placeholder="Election Title">
+            <textarea id="electionDesc" rows="3" placeholder="Description"></textarea>
+            <input type="text" id="electionOptions" placeholder="Options (comma): Option A,Option B">
+            <input type="number" id="electionDays" placeholder="Duration (days) max ${maxDays[tier]}" value="7">
+            <input type="text" id="electionCreator" placeholder="Your Wallet Address">
+            <p style="color:#ffd700;">Fee: ${fees[tier]} EKUSH</p>
+            <button onclick="createElection()">Create ${tier} Election</button>
+        `;
+        document.getElementById('createForm').style.display = 'block';
+    }
+
+    async function createElection() {
+        const data = {
+            title: document.getElementById('electionTitle').value,
+            description: document.getElementById('electionDesc').value,
+            options: document.getElementById('electionOptions').value.split(',').map(o => o.trim()),
+            tier: currentTier,
+            duration_hours: parseInt(document.getElementById('electionDays').value) * 24,
+            creator: document.getElementById('electionCreator').value
+        };
+        const res = await fetch(`${API_URL}/election/create_tiered`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        document.getElementById('electionResult').innerHTML = result.success ? 
+            `<div class="message message-success">✅ Election created! ID: ${result.election_id}</div>` :
+            `<div class="message message-error">❌ ${result.error}</div>`;
+    }
+
+    async function voteOpen() {
+        const data = {
+            election_id: document.getElementById('openElectionId').value,
+            wallet_address: document.getElementById('openWallet').value,
+            choice: document.getElementById('openChoice').value,
+            private_key: document.getElementById('openPrivateKey').value
+        };
+        const res = await fetch(`${API_URL}/election/vote/open`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        document.getElementById('openVoteResult').innerHTML = result.success ?
+            `<div class="message message-success">✅ ${result.message}</div>` :
+            `<div class="message message-error">❌ ${result.error}</div>`;
+    }
+
+    async function voteNational() {
+        const data = {
+            election_id: document.getElementById('nationalElectionId').value,
+            national_id: document.getElementById('nationalId').value,
+            choice: document.getElementById('nationalChoice').value,
+            private_key: document.getElementById('nationalPrivateKey').value
+        };
+        const res = await fetch(`${API_URL}/election/vote/secure`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        document.getElementById('nationalVoteResult').innerHTML = result.success ?
+            `<div class="message message-success">✅ ${result.message}</div>` :
+            `<div class="message message-error">❌ ${result.error}</div>`;
+    }
+
+    async function createProposal() {
+        const data = {
+            title: document.getElementById('propTitle').value,
+            description: document.getElementById('propDesc').value,
+            type: document.getElementById('propType').value,
+            proposer: document.getElementById('propProposer').value
+        };
+        const res = await fetch(`${API_URL}/governance/propose`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        document.getElementById('governanceResult').innerHTML = result.success ?
+            `<div class="message message-success">✅ Proposal created! ID: ${result.proposal_id}</div>` :
+            `<div class="message message-error">❌ ${result.error}</div>`;
+        loadProposals();
+    }
+
+    async function loadProposals() {
+        const res = await fetch(`${API_URL}/governance/proposals`);
+        const data = await res.json();
+        let html = '';
+        for (const p of data.proposals) {
+            html += `<div style="padding:15px; background:#1a1a24; border-radius:12px; margin-bottom:10px;">
+                        <strong>${p.title}</strong> (${p.type})<br>
+                        <small>ID: ${p.proposal_id}</small><br>
+                        <button onclick="voteProposal('${p.proposal_id}', 'yes')">✓ Yes</button>
+                        <button onclick="voteProposal('${p.proposal_id}', 'no')">✗ No</button>
+                        <button onclick="voteProposal('${p.proposal_id}', 'abstain')">○ Abstain</button>
+                        <button onclick="viewProposal('${p.proposal_id}')">View</button>
+                    </div>`;
+        }
+        document.getElementById('proposalsList').innerHTML = html || '<div>No active proposals</div>';
+    }
+
+    async function voteProposal(proposalId, choice) {
+        const voter = prompt('Enter your wallet address:');
+        if (!voter) return;
+        const res = await fetch(`${API_URL}/governance/vote`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+            body: JSON.stringify({ proposal_id: proposalId, voter: voter, choice: choice })
+        });
+        const result = await res.json();
+        alert(result.success ? `✅ Voted ${choice} with ${result.voting_power} EKUSH` : `❌ ${result.error}`);
+        loadProposals();
+    }
+
+    async function viewProposal(proposalId) {
+        const res = await fetch(`${API_URL}/governance/proposal/${proposalId}/results`);
+        const data = await res.json();
+        document.getElementById('results').innerHTML = `
+            <div class="card"><h3>${data.title}</h3>
+            <div>✅ Yes: ${data.yes_votes} (${data.yes_percentage.toFixed(1)}%)</div>
+            <div>❌ No: ${data.no_votes} (${data.no_percentage.toFixed(1)}%)</div>
+            <div>○ Abstain: ${data.abstain_votes} (${data.abstain_percentage.toFixed(1)}%)</div>
+            <div>Passes: ${data.passes ? '✅ YES' : '❌ No'}</div></div>
+        `;
+        showTab('results');
+    }
+
+    async function getResults() {
+        const id = document.getElementById('resultId').value;
+        if (!id) return;
+        const res = await fetch(`${API_URL}/election/${id}/results`);
+        if (res.status === 404) {
+            document.getElementById('results').innerHTML = '<div class="message message-error">Not found</div>';
+            return;
+        }
+        const data = await res.json();
+        let html = `<div class="card"><h3>${data.title}</h3>
+                    <div>Status: ${data.status} | Tier: ${data.tier}</div>
+                    <div>Total Votes: ${data.total_votes} | Unique Voters: ${data.unique_voters}</div>`;
+        if (data.results_hidden) {
+            html += `<div class="message message-warning">🔒 Results hidden until election ends. ${data.time_left} remaining.</div>`;
+        } else {
+            html += `<div class="message message-success">🏆 WINNER: ${data.winner}</div>`;
+            for (const [opt, votes] of Object.entries(data.votes)) {
+                html += `<div class="result-item">
+                            <div class="result-label"><span>${opt}</span><span>${votes} votes (${data.percentages[opt]}%)</span></div>
+                            <div class="result-bar"><div class="result-fill" style="width: ${data.percentages[opt]}%;"></div></div>
+                         </div>`;
+            }
+        }
+        html += `</div>`;
+        document.getElementById('results').innerHTML = html;
+    }
+
+    async function registerNationalId() {
+        const data = {
+            national_id: document.getElementById('regNationalId').value,
+            wallet_address: document.getElementById('regWallet').value,
+            full_name: document.getElementById('regFullName').value,
+            date_of_birth: document.getElementById('regDob').value,
+            district: document.getElementById('regDistrict').value,
+            phone_number: document.getElementById('regPhone').value
+        };
+        const res = await fetch(`${API_URL}/voter/register_national`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        document.getElementById('registerResult').innerHTML = result.success ?
+            `<div class="message message-success">✅ ${result.message}<br>Verification: ${result.verification_hash}</div>` :
+            `<div class="message message-error">❌ ${result.error}</div>`;
+    }
+
+    async function verifyNationalId() {
+        const id = document.getElementById('checkNationalId').value;
+        if (!id) return;
+        const res = await fetch(`${API_URL}/voter/verify/${id}`);
+        const data = await res.json();
+        document.getElementById('verifyResult').innerHTML = data.verified ?
+            `<div class="message message-success">✅ Verified! Wallet: ${data.wallet_address}<br>Name: ${data.full_name}<br>District: ${data.district}</div>` :
+            `<div class="message message-error">❌ National ID not registered</div>`;
+    }
+
+    async function createWallet() {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.innerText = '⏳ Generating...';
+        const res = await fetch(`${API_URL}/wallet/new`);
+        const data = await res.json();
+        document.getElementById('walletInfo').innerHTML = `
+            <div class="key-box">
+                <div><strong>Address:</strong> ${data.address} <button class="copy-btn" onclick="copyToClipboard('${data.address}')">Copy</button></div>
+                <div><strong>Public Key:</strong> ${data.public_key} <button class="copy-btn" onclick="copyToClipboard('${data.public_key}')">Copy</button></div>
+                <div><strong>Private Key:</strong> ${data.private_key} <button class="copy-btn" onclick="copyToClipboard('${data.private_key}')">Copy</button></div>
+            </div>
+        `;
+        btn.disabled = false;
+        btn.innerText = '✨ Generate New Wallet';
+    }
+
+    loadProposals();
+</script>
+</body>
+</html>

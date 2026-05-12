@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+ekush_chain.db
+demo_wallets.json
+*.db
+*.db
+ekush_chain.db
+ekush_chain.db
+*.db
+*.backup

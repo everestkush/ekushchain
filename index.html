@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EverestKush — EKUSH | Bitcoin Standard Blockchain + Voting System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B;
+  --red-dark: #922B21;
+  --red-light: #E74C3C;
+  --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017;
+  --gold-light: #F0C040;
+  --green: #4ADE80;
+  --blue: #378ADD;
+  --purple: #7F77DD;
+  --bg: #080810;
+  --bg2: #0E0E18;
+  --bg3: #141420;
+  --bg4: #1A1A28;
+  --bg5: #202030;
+  --border: rgba(255,255,255,0.06);
+  --border-bright: rgba(255,255,255,0.12);
+  --border-red: rgba(192,57,43,0.3);
+  --text: #EEEDF6;
+  --text2: #8E8D9A;
+  --text3: #4E4D5A;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,16,0.9);
+  backdrop-filter: blur(24px);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.nav-logo .flag { font-size: 1rem; }
+.nav-logo .kush-red { color: var(--red); }
+.nav-badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  padding: 0.18rem 0.55rem;
+  border-radius: 3px;
+  background: var(--red-glow);
+  border: 1px solid var(--border-red);
+  color: var(--red-light);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  overflow-x: auto;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  padding: 0 0.9rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s, background 0.2s;
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-links li:last-child a { border-right: 1px solid var(--border); }
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 5rem;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,57,43,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,57,43,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 80%);
+}
+.hero-glow {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(192,57,43,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 14vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: rise 0.9s ease 0.3s forwards;
+}
+.hero h1 .line2 {
+  display: block;
+  color: var(--text3);
+  font-size: 0.45em;
+  letter-spacing: 0.3em;
+}
+.hero-sub {
+  font-size: 0.95rem;
+  color: var(--text2);
+  font-weight: 300;
+  max-width: 440px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: rise 0.9s ease 0.5s forwards;
+}
+.hero-cta {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: rise 0.9s ease 0.7s forwards;
+  margin-bottom: 4rem;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Ticker */
+.ticker-strip {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0;
+  animation: rise 0.9s ease 0.9s forwards;
+  background: var(--bg2);
+}
+.ticker-cell {
+  padding: 1.1rem 0.75rem;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.ticker-cell:last-child { border-right: none; }
+.ticker-val {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+.ticker-val.green { color: var(--green); }
+.ticker-val.gold  { color: var(--gold); }
+.ticker-val.red   { color: var(--red-light); }
+.ticker-val.blue  { color: var(--blue); }
+.ticker-val.purple { color: var(--purple); }
+.ticker-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* BUTTONS */
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.8rem 1.75rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(192,57,43,0.3); }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border-bright); }
+.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
+.btn-full { width: 100%; justify-content: center; }
+.btn-sm { font-size: 0.68rem; padding: 0.6rem 1.1rem; }
+
+/* LAYOUT */
+.page-section {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--red-light);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+
+/* CARDS */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover { border-color: var(--border-bright); box-shadow: 0 4px 32px rgba(0,0,0,0.3); }
+.card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card-eyebrow::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+}
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+.card p {
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* INPUTS */
+.field { margin-bottom: 0.75rem; }
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+input, select, textarea {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.7rem 0.9rem;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--border-red);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+input::placeholder { color: var(--text3); }
+select option { background: var(--bg3); }
+
+/* RESULTS */
+.result {
+  margin-top: 0.9rem;
+  padding: 0.9rem;
+  border-radius: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  line-height: 1.75;
+  display: none;
+}
+.result.show { display: block; }
+.result.ok   { background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.18); color: var(--green); }
+.result.err  { background: rgba(192,57,43,0.08); border: 1px solid var(--border-red); color: var(--red-light); }
+.result.info { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
+
+.rrow { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.25rem; flex-wrap: wrap; }
+.rk { color: var(--text3); flex-shrink: 0; }
+.rv { color: var(--text); word-break: break-all; text-align: right; }
+.rv.hi   { color: var(--green); }
+.rv.gold { color: var(--gold-light); }
+.rv.red  { color: var(--red-light); }
+.rv.blue { color: var(--blue); }
+.rv.purple { color: var(--purple); }
+
+.warn-box {
+  background: rgba(212,160,23,0.07);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--gold-light);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+.secret-box {
+  background: rgba(192,57,43,0.06);
+  border: 1px solid var(--border-red);
+  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  word-break: break-all;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold-light);
+  margin-top: 0.6rem;
+}
+.info-box {
+  background: rgba(55,138,221,0.07);
+  border: 1px solid rgba(55,138,221,0.2);
+  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--blue);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
+.mnemonic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.mnemonic-word {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.35rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.mnemonic-word .wi {
+  color: var(--text3);
+  font-size: 0.62rem;
+  flex-shrink: 0;
+  min-width: 1.2rem;
+}
+
+/* BLOCK EXPLORER */
+.block-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.18s;
+}
+.block-row:hover { border-color: var(--border-bright); }
+.block-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text3);
+  background: var(--bg4);
+  padding: 0.35rem 0.55rem;
+  border-radius: 4px;
+  text-align: center;
+}
+.block-hash { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text2); }
+.block-txs {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--red-light);
+  background: rgba(192,57,43,0.1);
+  padding: 0.25rem 0.55rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* TOKEN BARS */
+.tbar { margin-bottom: 1rem; }
+.tbar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.tbar-labels span:first-child { color: var(--text2); }
+.tbar-labels span:last-child  { color: var(--text3); }
+.tbar-track { height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
+.tbar-fill { height: 100%; border-radius: 2px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+
+/* TABS */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.tab {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  padding: 0.65rem 1.2rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.18s, border-color 0.18s;
+  user-select: none;
+}
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--red-light); border-bottom-color: var(--red); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* STATUS */
+.live-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 0.4rem;
+  animation: blink 2s ease-in-out infinite;
+}
+.live-dot.yellow { background: var(--gold); }
+.live-dot.blue   { background: var(--blue); }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+.divider { border: none; border-top: 1px solid var(--border); }
+
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--border-bright);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* FEATURE GRID */
+.tx-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.tx-feature {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text2);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.4;
+}
+.tx-feature .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+.dot-green  { background: var(--green); }
+.dot-blue   { background: var(--blue); }
+.dot-purple { background: var(--purple); }
+.dot-gold   { background: var(--gold); }
+.dot-red    { background: var(--red-light); }
+
+/* SEGWIT / SCRIPT badges */
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  display: inline-block;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+.badge-green  { background: rgba(74,222,128,0.1);  color: var(--green); }
+.badge-blue   { background: rgba(55,138,221,0.1);  color: var(--blue); }
+.badge-purple { background: rgba(127,119,221,0.1); color: var(--purple); }
+.badge-gold   { background: rgba(212,160,23,0.1);  color: var(--gold-light); }
+
+/* NODE STATUS PANEL */
+.node-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.node-stat {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.node-stat-val {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.node-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* P2P PEERS */
+.peer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 0.9rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.peer-ip { color: var(--text2); }
+.peer-ping { color: var(--green); }
+.peer-score { color: var(--text3); }
+.peer-version { color: var(--blue); font-size: 0.62rem; }
+
+/* SCHNORR / TAPROOT section */
+.bip-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.bip-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.bip-badge.red    { border-color: var(--border-red); color: var(--red-light); background: rgba(192,57,43,0.06); }
+.bip-badge.blue   { border-color: rgba(55,138,221,0.3); color: var(--blue); background: rgba(55,138,221,0.06); }
+.bip-badge.purple { border-color: rgba(127,119,221,0.3); color: var(--purple); background: rgba(127,119,221,0.06); }
+.bip-badge.gold   { border-color: rgba(212,160,23,0.3); color: var(--gold-light); background: rgba(212,160,23,0.06); }
+.bip-badge.green  { border-color: rgba(74,222,128,0.3); color: var(--green); background: rgba(74,222,128,0.06); }
+
+/* VOTING SECTION */
+.vote-results {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.vote-stat {
+  text-align: center;
+  padding: 1rem;
+  background: var(--bg3);
+  border-radius: 8px;
+  min-width: 100px;
+}
+.vote-stat .value {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--red-light);
+}
+.vote-stat .label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  margin-top: 0.3rem;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  color: var(--text3);
+  margin-bottom: 0.5rem;
+}
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--text3);
+  line-height: 2;
+}
+
+@media (max-width: 768px) {
+  nav { padding: 0 1.25rem; }
+  .nav-links { display: none; }
+  .page-section { padding: 3rem 1.25rem; }
+  .hero { padding: 6rem 1.25rem 3rem; }
+  .ticker-strip { grid-template-columns: repeat(3, 1fr); }
+  .ticker-cell:nth-child(4), .ticker-cell:nth-child(5), .ticker-cell:nth-child(6) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="flag">🇳🇵</span>
+    EVEREST<span class="kush-red">KUSH</span>
+    <span class="nav-badge">BITCOIN STANDARD + VOTING</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#wallet">Wallet</a></li>
+    <li><a href="#hdwallet">HD Wallet</a></li>
+    <li><a href="#voting">Voting</a></li>
+    <li><a href="#segwit">SegWit</a></li>
+    <li><a href="#txlayer">Transactions</a></li>
+    <li><a href="#p2p">P2P</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#node">Node Ops</a></li>
+    <li><a href="#explorer">Explorer</a></li>
+    <li><a href="#tokenomics">Tokenomics</a></li>
+    <li><a href="https://github.com/kush010011/everestkush" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <h1>
+    EVEREST<span style="color:var(--red);">KUSH</span><br>
+    <span class="line2">EKUSH</span>
+  </h1>
+
+  <p class="hero-sub">Made in Nepal<br>8-second finality · Taproot · BFT DPoS · 1 Billion supply · On-Chain Voting</p>
+
+  <div class="hero-cta">
+    <a href="#wallet" class="btn btn-primary">Create Wallet</a>
+    <a href="#voting" class="btn btn-primary" style="background: var(--purple);">🗳️ Vote Now</a>
+    <a href="#segwit" class="btn btn-ghost">SegWit + Taproot</a>
+    <a href="#txlayer" class="btn btn-ghost">Transactions</a>
+    <a href="#p2p" class="btn btn-ghost">P2P Network</a>
+    <a href="#node" class="btn btn-ghost">Node Ops</a>
+    <a href="#explorer" class="btn btn-ghost">Explorer</a>
+  </div>
+
+  <div class="ticker-strip">
+    <div class="ticker-cell">
+      <div class="ticker-val" id="stat-blocks">—</div>
+      <div class="ticker-label">Blocks</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val green" id="stat-status">—</div>
+      <div class="ticker-label">Chain</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val" id="stat-pending">—</div>
+      <div class="ticker-label">Pending TXs</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val gold" id="stat-difficulty">—</div>
+      <div class="ticker-label">Difficulty</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val blue" id="stat-supply">—</div>
+      <div class="ticker-label">Supply</div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-val purple" id="stat-wallets">—</div>
+      <div class="ticker-label">Wallets</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- VOTING SECTION (NEW - Integrated with API) -->
+<section class="page-section" id="voting">
+  <p class="section-eyebrow">On-Chain Governance · BFT DPoS Voting</p>
+  <h2 class="section-title">🗳️ DECENTRALIZED VOTING</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">Register to Vote</div>
+      <h3>Become a Voter</h3>
+      <p>Register your wallet to participate in governance votes.</p>
+      <div class="field">
+        <label>Wallet Address</label>
+        <input type="text" id="voter-wallet" placeholder="EKUSH wallet address">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="registerVoter()">Register Wallet</button>
+      <div id="voter-register-result" class="result"></div>
+      <div class="info-box">ℹ Registration is free. Your voting power = EKUSH balance.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Check Registration</div>
+      <h3>Verify Voter Status</h3>
+      <p>Check if your wallet is registered and your vote status.</p>
+      <div class="field">
+        <label>Wallet Address</label>
+        <input type="text" id="check-wallet" placeholder="EKUSH wallet address">
+      </div>
+      <button class="btn btn-ghost btn-full" onclick="checkVoterStatus()">Check Status</button>
+      <div id="voter-check-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top: 1rem;">
+    <div class="card">
+      <div class="card-eyebrow">Cast Your Vote</div>
+      <h3>Vote on Proposals</h3>
+      <div class="field">
+        <label>Voter ID</label>
+        <input type="text" id="vote-voterid" placeholder="Your voter ID">
+      </div>
+      <div class="field">
+        <label>Private Key</label>
+        <input type="text" id="vote-privkey" placeholder="Your voter private key">
+      </div>
+      <div class="field">
+        <label>Choose Option</label>
+        <select id="vote-choice">
+          <option value="proposal_a">Proposal A - Increase Block Size</option>
+          <option value="proposal_b">Proposal B - Reduce Transaction Fees</option>
+          <option value="proposal_c">Proposal C - Increase Validator Reward</option>
+          <option value="abstain">Abstain</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="castVote()">Submit Vote</button>
+      <div id="vote-cast-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Live Results</div>
+      <h3>Current Vote Tally</h3>
+      <button class="btn btn-ghost btn-full" onclick="loadVoteResults()">Refresh Results</button>
+      <div id="vote-results" class="result" style="display: block;">
+        <div class="vote-results" id="results-container">
+          <div style="text-align: center; color: var(--text3);">Click refresh to see results</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- HD WALLET -->
+<section class="page-section" id="hdwallet">
+  <p class="section-eyebrow">BIP32 · BIP39 · BIP44 · BIP47</p>
+  <h2 class="section-title">HD WALLET</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">Generate Mnemonic · BIP39</div>
+      <h3>Seed Phrase</h3>
+      <p>One phrase backs up ALL your wallets. Write it on paper.</p>
+      <div class="field">
+        <label>Strength</label>
+        <select id="mnemonic-words">
+          <option value="12">12 words — 128 bit</option>
+          <option value="24">24 words — 256 bit</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="generateMnemonic()">Generate Seed Phrase</button>
+      <div id="mnemonic-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Restore Wallet · BIP39</div>
+      <h3>Recover from Seed</h3>
+      <p>Enter your 12 or 24 word phrase to recover your wallet.</p>
+      <div class="field">
+        <label>Seed Phrase</label>
+        <textarea id="restore-mnemonic" rows="3" placeholder="word1 word2 word3 ..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="restoreWallet()">Restore Wallet</button>
+      <div id="restore-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div class="card">
+      <div class="card-eyebrow">Derive Addresses · BIP44</div>
+      <h3>Multiple Addresses</h3>
+      <p>Path: m/44'/1989'/0'/0/index</p>
+      <div class="field">
+        <label>Count (max 50)</label>
+        <input type="number" id="address-count" value="5" min="1" max="50">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="generateAddresses()">Generate Addresses</button>
+      <div id="addresses-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Watch-Only · xpub</div>
+      <h3>Shareable Public Key</h3>
+      <p>Share your xpub to let others monitor wallets without spending.</p>
+      <button class="btn btn-ghost btn-full" onclick="getXpub()">Get xpub Key</button>
+      <div id="xpub-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div class="card">
+      <div class="card-eyebrow">Payment Codes · BIP47</div>
+      <h3>Reusable Address</h3>
+      <p>Generate a static payment code others can send to repeatedly — without address reuse on-chain.</p>
+      <button class="btn btn-primary btn-full" onclick="getPaymentCode()">Generate Payment Code</button>
+      <div id="paymentcode-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Key Rotation</div>
+      <h3>Rotate Keys</h3>
+      <p>Re-key your wallet without changing address history. Useful after suspected key exposure.</p>
+      <div class="field">
+        <label>Current Private Key</label>
+        <input type="text" id="rotate-privkey" placeholder="hex private key">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="rotateKeys()">Rotate Keys</button>
+      <div id="rotate-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WALLET & SEND -->
+<section class="page-section" id="wallet">
+  <p class="section-eyebrow">Node Interface · UTXO Chainstate</p>
+  <h2 class="section-title">WALLET & SEND</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">New Wallet</div>
+      <h3>Generate EKUSH Wallet</h3>
+      <p>Creates a new secp256k1 keypair with a Base58 address.</p>
+      <button class="btn btn-primary btn-full" onclick="createWallet()">Generate Wallet</button>
+      <div id="wallet-result" class="result"></div>
+      <div class="warn-box">⚠ Save your private key now. There is no recovery mechanism.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Balance · UTXO Chainstate</div>
+      <h3>Check Balance</h3>
+      <p>O(1) query from UTXO chainstate database — instant lookup regardless of chain length.</p>
+      <div class="field">
+        <label>Address</label>
+        <input type="text" id="balance-address" placeholder="EKUSH address">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="checkBalance()">Get Balance</button>
+      <div id="balance-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div class="card">
+      <div class="card-eyebrow">Send · Fee Estimation</div>
+      <h3>Transfer EKUSH</h3>
+      <div class="field"><label>Private Key</label><input type="text" id="send-privkey" placeholder="hex private key"></div>
+      <div class="field"><label>Recipient Address</label><input type="text" id="send-recipient" placeholder="EKUSH address"></div>
+      <div class="field"><label>Amount (EKUSH)</label><input type="number" id="send-amount" placeholder="0.00" step="any" oninput="updateFeePreview()"></div>
+      <div id="fee-preview" style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text3);min-height:1.2em;margin-bottom:0.75rem;"></div>
+      <button class="btn btn-primary btn-full" onclick="sendTransaction()">Send EKUSH</button>
+      <div id="send-result" class="result"></div>
+      <div class="warn-box">⚠ Transactions are irreversible. Verify the recipient address.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Coin Control · UTXO Selection</div>
+      <h3>Select UTXOs</h3>
+      <p>Manually choose which UTXOs to spend for better privacy and fee control.</p>
+      <div class="field">
+        <label>Address</label>
+        <input type="text" id="coincontrol-address" placeholder="EKUSH address">
+      </div>
+      <button class="btn btn-ghost btn-full" onclick="loadUTXOs()">List UTXOs</button>
+      <div id="utxo-list" class="result"></div>
+    </div>
+  </div>
+
+  <div class="card" style="max-width:560px;margin-top:1rem;">
+    <div class="card-eyebrow">Fee Estimator · Historical Blocks</div>
+    <h3>Estimate Fee</h3>
+    <p>Uses historical block data to recommend sat/byte for N-block confirmation target.</p>
+    <div class="field">
+      <label>Target Confirmation (blocks)</label>
+      <select id="fee-target">
+        <option value="1">1 block — fastest</option>
+        <option value="3">3 blocks — fast</option>
+        <option value="6" selected>6 blocks — standard</option>
+        <option value="12">12 blocks — economy</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="estimateFee()">Estimate Fee</button>
+    <div id="feeest-result" class="result"></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SEGWIT + TAPROOT -->
+<section class="page-section" id="segwit">
+  <p class="section-eyebrow">BIP141 · BIP340 · BIP341 · BIP342</p>
+  <h2 class="section-title">SEGWIT & TAPROOT</h2>
+
+  <div class="bip-badge-row">
+    <span class="bip-badge blue">BIP141 SegWit</span>
+    <span class="bip-badge blue">P2WPKH</span>
+    <span class="bip-badge blue">P2WSH</span>
+    <span class="bip-badge purple">BIP340 Schnorr</span>
+    <span class="bip-badge purple">BIP341 Taproot</span>
+    <span class="bip-badge purple">BIP342 Tapscript</span>
+    <span class="bip-badge green">84 Opcodes</span>
+    <span class="bip-badge gold">Key Aggregation</span>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this,'tab-p2wpkh')">P2WPKH</div>
+    <div class="tab" onclick="switchTab(this,'tab-p2wsh')">P2WSH</div>
+    <div class="tab" onclick="switchTab(this,'tab-taproot')">Taproot</div>
+    <div class="tab" onclick="switchTab(this,'tab-schnorr')">Schnorr</div>
+    <div class="tab" onclick="switchTab(this,'tab-scriptvm')">Script VM</div>
+  </div>
+
+  <div id="tab-p2wpkh" class="tab-panel active">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Native SegWit · BIP141</div>
+      <h3>P2WPKH Address</h3>
+      <p>Pay-to-Witness-Public-Key-Hash. Native SegWit — lower fees, no transaction malleability.</p>
+      <div class="field"><label>Public Key (hex)</label><input type="text" id="p2wpkh-pubkey" placeholder="02 or 03 compressed pubkey..."></div>
+      <button class="btn btn-primary btn-full" onclick="generateP2WPKH()">Generate P2WPKH Address</button>
+      <div id="p2wpkh-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-p2wsh" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Witness Script Hash · BIP141</div>
+      <h3>P2WSH Address</h3>
+      <p>Pay-to-Witness-Script-Hash. SegWit equivalent of P2SH — complex scripts with lower fees.</p>
+      <div class="field">
+        <label>Witness Script (hex)</label>
+        <textarea id="p2wsh-script" rows="3" placeholder="OP_2 pubkey1 pubkey2 pubkey3 OP_3 OP_CHECKMULTISIG..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="generateP2WSH()">Generate P2WSH Address</button>
+      <div id="p2wsh-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-taproot" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Taproot · BIP341</div>
+      <h3>Taproot Address</h3>
+      <p>Combines key-path and script-path spending. Complex conditions look like simple payments on-chain.</p>
+      <div class="field"><label>Internal Key (hex)</label><input type="text" id="taproot-key" placeholder="32-byte x-only pubkey..."></div>
+      <div class="field">
+        <label>Tapscript (optional)</label>
+        <textarea id="taproot-script" rows="2" placeholder="Leave blank for key-path only spend"></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="generateTaprootAddress()">Generate Taproot Address</button>
+      <div id="taproot-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-schnorr" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Schnorr Signatures · BIP340</div>
+      <h3>Sign with Schnorr</h3>
+      <p>Linear signature aggregation — multiple signers produce one combined signature. Smaller, faster, more private than ECDSA.</p>
+      <div class="field"><label>Private Key (hex)</label><input type="text" id="schnorr-privkey" placeholder="32-byte private key..."></div>
+      <div class="field"><label>Message (hex or text)</label><input type="text" id="schnorr-message" placeholder="message to sign"></div>
+      <button class="btn btn-primary btn-full" onclick="schnorrSign()">Sign with Schnorr</button>
+      <div id="schnorr-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-scriptvm" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Script VM · 84 Opcodes</div>
+      <h3>Execute Script</h3>
+      <p>Run Bitcoin-compatible scripts against the EKUSH script interpreter. Full opcode support including OP_CHECKLOCKTIMEVERIFY, OP_CHECKSEQUENCEVERIFY.</p>
+      <div class="field">
+        <label>ScriptPubKey (locking script)</label>
+        <input type="text" id="vm-lock" placeholder="OP_DUP OP_HASH160 ...">
+      </div>
+      <div class="field">
+        <label>ScriptSig (unlocking script)</label>
+        <input type="text" id="vm-unlock" placeholder="signature pubkey">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="executeScript()">Execute Script</button>
+      <div id="vm-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TRANSACTION LAYER -->
+<section class="page-section" id="txlayer">
+  <p class="section-eyebrow">BIP16 · BIP65 · BIP68 · BIP125</p>
+  <h2 class="section-title">TRANSACTION LAYER</h2>
+
+  <div class="tx-feature-grid">
+    <div class="tx-feature"><div class="dot dot-green"></div>P2SH Multisig (M-of-N)</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>OP_RETURN (80 bytes)</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>CLTV Timelock (BIP65)</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>CSV Timelock (BIP68)</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>Dust Limit Enforcement</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>nLockTime + nSequence</div>
+    <div class="tx-feature"><div class="dot dot-blue"></div>Replace-by-Fee (BIP125)</div>
+    <div class="tx-feature"><div class="dot dot-blue"></div>Double-spend Detection</div>
+    <div class="tx-feature"><div class="dot dot-blue"></div>Fee Priority Mempool</div>
+    <div class="tx-feature"><div class="dot dot-purple"></div>PSBT (BIP174)</div>
+    <div class="tx-feature"><div class="dot dot-purple"></div>TX Version Field</div>
+    <div class="tx-feature"><div class="dot dot-gold"></div>Address Reuse Warnings</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this,'tab-opreturn')">OP_RETURN</div>
+    <div class="tab" onclick="switchTab(this,'tab-multisig')">Multisig</div>
+    <div class="tab" onclick="switchTab(this,'tab-timelock')">Timelock</div>
+    <div class="tab" onclick="switchTab(this,'tab-rbf')">RBF</div>
+    <div class="tab" onclick="switchTab(this,'tab-psbt')">PSBT</div>
+    <div class="tab" onclick="switchTab(this,'tab-dust')">Dust Limit</div>
+  </div>
+
+  <div id="tab-opreturn" class="tab-panel active">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">OP_RETURN · On-chain Data</div>
+      <h3>Embed Data on Chain</h3>
+      <p>Store up to 80 bytes permanently on-chain. Output is provably unspendable and pruned from UTXO set.</p>
+      <div class="field"><label>Private Key</label><input type="text" id="opreturn-privkey" placeholder="hex private key"></div>
+      <div class="field">
+        <label>Data to Embed <span id="opreturn-counter" style="float:right;color:var(--text3);">0 / 80 bytes</span></label>
+        <input type="text" id="opreturn-data" placeholder="Hello EverestKush!" oninput="updateOpReturnCounter()">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="submitOpReturn()">Embed on Chain</button>
+      <div id="opreturn-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-multisig" class="tab-panel">
+    <div class="card" style="max-width:620px;">
+      <div class="card-eyebrow">P2SH Multisig · BIP16</div>
+      <h3>Create M-of-N Address</h3>
+      <p>Generate a P2SH address that requires M out of N signatures to spend.</p>
+      <div class="field"><label>Required Signatures (M)</label><input type="number" id="multisig-m" value="2" min="1" max="15"></div>
+      <div class="field">
+        <label>Public Keys (one per line)</label>
+        <textarea id="multisig-keys" rows="4" placeholder="03a1b2c3...&#10;03b2c3d4...&#10;03c3d4e5..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="createMultisig()">Create Multisig Address</button>
+      <div id="multisig-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-timelock" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Timelock · CLTV / CSV</div>
+      <h3>Time-Locked Transaction</h3>
+      <p>Lock funds until a specific block height (CLTV) or for a relative number of blocks (CSV).</p>
+      <div class="field"><label>Private Key</label><input type="text" id="timelock-privkey" placeholder="hex private key"></div>
+      <div class="field"><label>Recipient</label><input type="text" id="timelock-recipient" placeholder="EKUSH address"></div>
+      <div class="field"><label>Amount (EKUSH)</label><input type="number" id="timelock-amount" placeholder="0.00" step="any"></div>
+      <div class="field">
+        <label>Lock Type</label>
+        <select id="timelock-type" onchange="updateTimelockLabel()">
+          <option value="cltv">CLTV — absolute block height</option>
+          <option value="csv">CSV — relative block count</option>
+        </select>
+      </div>
+      <div class="field">
+        <label id="timelock-input-label">Lock Until Block</label>
+        <input type="number" id="timelock-value" placeholder="e.g. 1000">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="createTimelock()">Create Timelocked TX</button>
+      <div id="timelock-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-rbf" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Replace-by-Fee · BIP125</div>
+      <h3>Bump Transaction Fee</h3>
+      <p>Replace a stuck unconfirmed transaction with a higher-fee version to speed up confirmation.</p>
+      <div class="field"><label>Original TX Hash</label><input type="text" id="rbf-txhash" placeholder="original transaction hash"></div>
+      <div class="field"><label>Private Key</label><input type="text" id="rbf-privkey" placeholder="hex private key"></div>
+      <div class="field"><label>New Fee (EKUSH)</label><input type="number" id="rbf-fee" placeholder="higher than original" step="any"></div>
+      <button class="btn btn-primary btn-full" onclick="submitRBF()">Bump Fee (RBF)</button>
+      <div id="rbf-result" class="result"></div>
+      <div class="info-box">ℹ RBF only works if the original transaction was sent with BIP125 opt-in flag.</div>
+    </div>
+  </div>
+
+  <div id="tab-psbt" class="tab-panel">
+    <div class="card" style="max-width:620px;">
+      <div class="card-eyebrow">Partially Signed Tx · BIP174</div>
+      <h3>PSBT (Multisig Coordination)</h3>
+      <p>Create, sign, and finalize Partially Signed Bitcoin Transactions. Used for hardware wallet signing and multisig coordination.</p>
+      <div class="tabs" style="margin-bottom:1rem;">
+        <div class="tab active" onclick="switchTab(this,'psbt-create')">Create</div>
+        <div class="tab" onclick="switchTab(this,'psbt-sign')">Sign</div>
+        <div class="tab" onclick="switchTab(this,'psbt-finalize')">Finalize</div>
+      </div>
+      <div id="psbt-create" class="tab-panel active">
+        <div class="field"><label>Recipient</label><input type="text" id="psbt-recipient" placeholder="EKUSH address"></div>
+        <div class="field"><label>Amount (EKUSH)</label><input type="number" id="psbt-amount" placeholder="0.00" step="any"></div>
+        <button class="btn btn-primary btn-full" onclick="createPSBT()">Create PSBT</button>
+        <div id="psbt-create-result" class="result"></div>
+      </div>
+      <div id="psbt-sign" class="tab-panel">
+        <div class="field"><label>PSBT (base64)</label><textarea id="psbt-sign-data" rows="3" placeholder="cHNidP8B..."></textarea></div>
+        <div class="field"><label>Private Key</label><input type="text" id="psbt-sign-key" placeholder="hex private key"></div>
+        <button class="btn btn-primary btn-full" onclick="signPSBT()">Sign PSBT</button>
+        <div id="psbt-sign-result" class="result"></div>
+      </div>
+      <div id="psbt-finalize" class="tab-panel">
+        <div class="field"><label>Signed PSBT (base64)</label><textarea id="psbt-final-data" rows="3" placeholder="cHNidP8B..."></textarea></div>
+        <button class="btn btn-primary btn-full" onclick="finalizePSBT()">Finalize & Broadcast</button>
+        <div id="psbt-final-result" class="result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-dust" class="tab-panel">
+    <div class="card" style="max-width:480px;">
+      <div class="card-eyebrow">Dust Limit · Bitcoin Standard</div>
+      <h3>Dust Limit Policy</h3>
+      <p>Outputs below the dust threshold are rejected to prevent UTXO set bloat.</p>
+      <button class="btn btn-ghost btn-full" onclick="fetchDustLimit()">Check Dust Policy</button>
+      <div id="dust-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- P2P NETWORK -->
+<section class="page-section" id="p2p">
+  <p class="section-eyebrow">BIP152 · BIP156 · AddrMan · Headers-First</p>
+  <h2 class="section-title">P2P NETWORK</h2>
+
+  <div class="tx-feature-grid" style="margin-bottom:2rem;">
+    <div class="tx-feature"><div class="dot dot-green"></div>Compact Blocks (BIP152)</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>Peer Misbehavior Scoring</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>AddrMan Bucketing</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>Message Checksum Validation</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>Ping/Pong Keepalive</div>
+    <div class="tx-feature"><div class="dot dot-green"></div>Max Connections per Subnet</div>
+    <div class="tx-feature"><div class="dot dot-blue"></div>Headers-First Sync</div>
+    <div class="tx-feature"><div class="dot dot-blue"></div>INV / GETDATA Flow</div>
+    <div class="tx-feature"><div class="dot dot-purple"></div>Dandelion++ Privacy (BIP156)</div>
+    <div class="tx-feature"><div class="dot dot-purple"></div>Address Announcement Randomization</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">Connected Peers</div>
+      <h3>Peer Status</h3>
+      <p>Live view of connected nodes, latency, and misbehavior scores.</p>
+      <button class="btn btn-ghost btn-full" onclick="loadPeers()">↻ Refresh Peers</button>
+      <div id="peers-list" style="margin-top:1rem;"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Dandelion++ · BIP156</div>
+      <h3>Privacy Routing</h3>
+      <p>Transactions are relayed through a random stem path before broadcasting — preventing IP-to-TX linkage.</p>
+      <button class="btn btn-ghost btn-full" onclick="getDandelionStatus()">Check Dandelion Status</button>
+      <div id="dandelion-result" class="result"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div class="card">
+      <div class="card-eyebrow">Headers-First Sync</div>
+      <h3>Sync Status</h3>
+      <p>Download and validate block headers before full blocks — DoS-resistant initial sync.</p>
+      <button class="btn btn-ghost btn-full" onclick="getSyncStatus()">Check Sync Status</button>
+      <div id="sync-result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Add Peer · Manual</div>
+      <h3>Connect to Node</h3>
+      <p>Manually add a peer node to your connection pool.</p>
+      <div class="field"><label>Peer IP:Port</label><input type="text" id="add-peer-addr" placeholder="192.168.1.x:5001"></div>
+      <button class="btn btn-primary btn-full" onclick="addPeer()">Add Peer</button>
+      <div id="addpeer-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NETWORK STATUS -->
+<section class="page-section" id="network">
+  <p class="section-eyebrow">Bitcoin Standard Features · BFT DPoS</p>
+  <h2 class="section-title">NETWORK STATUS</h2>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-eyebrow">Difficulty Adjustment</div>
+      <div class="rrow"><span class="rk">Current Difficulty</span><span class="rv" id="net-diff">—</span></div>
+      <div class="rrow"><span class="rk">Target Block Time</span><span class="rv hi">8 seconds</span></div>
+      <div class="rrow"><span class="rk">Blocks to Adjustment</span><span class="rv" id="net-adjust">—</span></div>
+      <div class="rrow"><span class="rk">Standard</span><span class="rv gold">Bitcoin (2016 blocks)</span></div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Reward Halving</div>
+      <div class="rrow"><span class="rk">Current Reward</span><span class="rv hi" id="halving-reward">—</span></div>
+      <div class="rrow"><span class="rk">Next Halving Block</span><span class="rv" id="halving-next">—</span></div>
+      <div class="rrow"><span class="rk">Blocks to Halving</span><span class="rv" id="halving-blocks">—</span></div>
+      <div class="rrow"><span class="rk">Interval</span><span class="rv gold">210,000 blocks</span></div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Mempool</div>
+      <div class="rrow"><span class="rk">Pending TXs</span><span class="rv" id="mempool-pending">—</span></div>
+      <div class="rrow"><span class="rk">Max Size</span><span class="rv" id="mempool-max">—</span></div>
+      <div class="rrow"><span class="rk">Usage</span><span class="rv" id="mempool-usage">—</span></div>
+      <div class="rrow"><span class="rk">Fee Priority</span><span class="rv hi">Enabled</span></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1rem;">
+    <div class="card">
+      <div class="card-eyebrow">BFT DPoS Consensus</div>
+      <div class="rrow"><span class="rk">Validators</span><span class="rv" id="bft-validators">—</span></div>
+      <div class="rrow"><span class="rk">BFT Threshold</span><span class="rv hi">14/21 (67%)</span></div>
+      <div class="rrow"><span class="rk">Equivocation Slashing</span><span class="rv hi">Active</span></div>
+      <div class="rrow"><span class="rk">Offline Penalty</span><span class="rv gold">Reduced stake</span></div>
+      <div class="rrow"><span class="rk">Finality Gadget</span><span class="rv hi">Active</span></div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">AssumeValid + AssumeUTXO</div>
+      <div class="rrow"><span class="rk">AssumeValid Block</span><span class="rv" id="assumevalid-block">—</span></div>
+      <div class="rrow"><span class="rk">Script Validation</span><span class="rv hi">Skipped before AV</span></div>
+      <div class="rrow"><span class="rk">AssumeUTXO</span><span class="rv hi">Snapshot ready</span></div>
+      <div class="rrow"><span class="rk">Chain Work Score</span><span class="rv" id="chainwork">—</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NODE OPS -->
+<section class="page-section" id="node">
+  <p class="section-eyebrow">Operations · Monitoring · Developer</p>
+  <h2 class="section-title">NODE OPERATIONS</h2>
+
+  <div class="node-status-grid">
+    <div class="node-stat">
+      <div class="node-stat-val green" id="node-health">—</div>
+      <div class="node-stat-label">Node Health</div>
+    </div>
+    <div class="node-stat">
+      <div class="node-stat-val" id="node-tip-age">—</div>
+      <div class="node-stat-label">Tip Age (sec)</div>
+    </div>
+    <div class="node-stat">
+      <div class="node-stat-val blue" id="node-peers">—</div>
+      <div class="node-stat-label">Connected Peers</div>
+    </div>
+    <div class="node-stat">
+      <div class="node-stat-val gold" id="node-version">—</div>
+      <div class="node-stat-label">Node Version</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this,'tab-health')">Health</div>
+    <div class="tab" onclick="switchTab(this,'tab-reorg')">Reorg Recovery</div>
+    <div class="tab" onclick="switchTab(this,'tab-pruning')">Pruning</div>
+    <div class="tab" onclick="switchTab(this,'tab-regtest')">Regtest</div>
+    <div class="tab" onclick="switchTab(this,'tab-rpc')">JSON-RPC</div>
+    <div class="tab" onclick="switchTab(this,'tab-metrics')">Metrics</div>
+  </div>
+
+  <div id="tab-health" class="tab-panel active">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-eyebrow">Health Check · DB Integrity</div>
+        <h3>Node Health</h3>
+        <p>Full node health check including DB integrity verification, chain tip age, and peer connectivity.</p>
+        <button class="btn btn-primary btn-full" onclick="loadNodeHealth()">Run Health Check</button>
+        <div id="health-result" class="result"></div>
+      </div>
+      <div class="card">
+        <div class="card-eyebrow">Structured Logging · JSON</div>
+        <h3>Recent Log Entries</h3>
+        <p>Live tail of structured JSON logs with severity levels.</p>
+        <div class="field">
+          <label>Level Filter</label>
+          <select id="log-level">
+            <option value="all">All levels</option>
+            <option value="error">ERROR only</option>
+            <option value="warn">WARN+</option>
+            <option value="info">INFO+</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost btn-full" onclick="loadLogs()">Fetch Logs</button>
+        <div id="logs-result" class="result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-reorg" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Deep Reorg Recovery · 1000+ Blocks</div>
+      <h3>Reorg Status</h3>
+      <p>Monitor chain reorganization depth and trigger manual recovery if needed.</p>
+      <button class="btn btn-ghost btn-full" onclick="getReorgStatus()">Check Reorg Status</button>
+      <div id="reorg-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-pruning" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Pruning Mode · UTXO Only</div>
+      <h3>Storage Usage</h3>
+      <p>In pruning mode, only the UTXO set is retained. Historical blocks are discarded after validation.</p>
+      <button class="btn btn-ghost btn-full" onclick="getPruningStatus()">Check Pruning Status</button>
+      <div id="pruning-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-regtest" class="tab-panel">
+    <div class="card" style="max-width:560px;">
+      <div class="card-eyebrow">Regtest / Simnet Mode</div>
+      <h3>Developer Network</h3>
+      <p>Instant mining, no peers, instant block production. Use for dApp testing and development.</p>
+      <div class="field">
+        <label>Blocks to Mine</label>
+        <input type="number" id="regtest-blocks" value="1" min="1" max="100">
+      </div>
+      <div class="field">
+        <label>Reward Address</label>
+        <input type="text" id="regtest-address" placeholder="EKUSH address (optional)">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="regtestMine()">Mine Blocks (Regtest)</button>
+      <div id="regtest-result" class="result"></div>
+      <div class="warn-box">⚠ Regtest only. Does not affect mainnet or testnet.</div>
+    </div>
+  </div>
+
+  <div id="tab-rpc" class="tab-panel">
+    <div class="card" style="max-width:620px;">
+      <div class="card-eyebrow">JSON-RPC 2.0 · Bitcoin Core Compatible</div>
+      <h3>RPC Console</h3>
+      <p>Bitcoin Core-compatible RPC methods. Any tool that speaks Bitcoin RPC works with EKUSH.</p>
+      <div class="field">
+        <label>Method</label>
+        <select id="rpc-method">
+          <option value="getblockcount">getblockcount</option>
+          <option value="getblockhash">getblockhash</option>
+          <option value="getbestblockhash">getbestblockhash</option>
+          <option value="getblockchaininfo">getblockchaininfo</option>
+          <option value="getnetworkinfo">getnetworkinfo</option>
+          <option value="getmempoolinfo">getmempoolinfo</option>
+          <option value="getpeerinfo">getpeerinfo</option>
+          <option value="gettxoutsetinfo">gettxoutsetinfo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Params (JSON array, optional)</label>
+        <input type="text" id="rpc-params" placeholder='e.g. [100] for getblockhash'>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="callRPC()">Call RPC</button>
+      <div id="rpc-result" class="result"></div>
+    </div>
+  </div>
+
+  <div id="tab-metrics" class="tab-panel">
+    <div class="card" style="max-width:620px;">
+      <div class="card-eyebrow">Prometheus Metrics · /metrics</div>
+      <h3>Node Metrics</h3>
+      <p>Scrape-ready Prometheus metrics. Point your Prometheus instance at <code style="color:var(--blue);">/metrics</code> for full observability.</p>
+      <button class="btn btn-ghost btn-full" onclick="loadMetrics()">Fetch Metrics Snapshot</button>
+      <div id="metrics-result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXPLORER -->
+<section class="page-section" id="explorer">
+  <p class="section-eyebrow">Block Explorer</p>
+  <h2 class="section-title">CHAIN EXPLORER</h2>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+    <button class="btn btn-ghost btn-sm" onclick="loadExplorer()">↻ Refresh</button>
+    <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text3);">
+      <span class="live-dot"></span>Auto-refresh every 15s
+    </span>
+    <div style="margin-left:auto;display:flex;gap:0.5rem;align-items:center;">
+      <input type="text" id="explorer-search" placeholder="Search tx / block hash / address" style="width:280px;padding:0.5rem 0.8rem;font-size:0.72rem;">
+      <button class="btn btn-ghost btn-sm" onclick="explorerSearch()">Search</button>
+    </div>
+  </div>
+  <div id="explorer-blocks"><div style="padding:2rem;text-align:center;color:var(--text3);font-family:var(--font-mono);font-size:0.8rem;">Loading chain...</div></div>
+</section>
+
+<hr class="divider">
+
+<!-- TOKENOMICS -->
+<section class="page-section" id="tokenomics">
+  <p class="section-eyebrow">Token Economics</p>
+  <h2 class="section-title">EKUSH SUPPLY</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-eyebrow">Distribution</div>
+      <div class="tbar"><div class="tbar-labels"><span>Public Allocation</span><span>300M · 30%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:30%;background:var(--red);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Validator Rewards</span><span>300M · 30%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:20%;background:var(--blue);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Development Fund</span><span>150M · 15%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:15%;background:var(--purple);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Ecosystem Fund</span><span>150M · 15%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:15%;background:var(--gold);"></div></div></div>
+      <div class="tbar"><div class="tbar-labels"><span>Crisis Reserve 🔒</span><span>100M · 10%</span></div><div class="tbar-track"><div class="tbar-fill" style="width:10%;background:var(--green);"></div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Parameters</div>
+      <div class="rrow"><span class="rk">Total Supply</span><span class="rv">1,000,000,000 EKUSH</span></div>
+      <div class="rrow"><span class="rk">Block Time</span><span class="rv hi">8 seconds</span></div>
+      <div class="rrow"><span class="rk">TX Fee</span><span class="rv hi">0.1%</span></div>
+      <div class="rrow"><span class="rk">Consensus</span><span class="rv blue">BFT DPoS</span></div>
+      <div class="rrow"><span class="rk">Max Validators</span><span class="rv">21 elected</span></div>
+      <div class="rrow"><span class="rk">BFT Threshold</span><span class="rv hi">14/21 (67%)</span></div>
+      <div class="rrow"><span class="rk">Curve</span><span class="rv">secp256k1</span></div>
+      <div class="rrow"><span class="rk">Signature Schemes</span><span class="rv gold">ECDSA + Schnorr</span></div>
+      <div class="rrow"><span class="rk">HD Standards</span><span class="rv gold">BIP32 · BIP39 · BIP44 · BIP47</span></div>
+      <div class="rrow"><span class="rk">TX Standards</span><span class="rv gold">BIP16 · BIP65 · BIP68 · BIP125 · BIP174</span></div>
+      <div class="rrow"><span class="rk">Script Standards</span><span class="rv purple">BIP141 · BIP340 · BIP341 · BIP342</span></div>
+      <div class="rrow"><span class="rk">P2P Standards</span><span class="rv blue">BIP152 · BIP156 · BIP113</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<footer>
+  <div class="footer-brand">EverestKush</div>
+  <div class="footer-meta">
+    🇳🇵 MADE IN NEPAL · BITCOIN STANDARD<br>
+    1,000,000,000 EKUSH · 21 Validators · 0.1% Fee · 8-Second Finality · 92 Features · Taproot Ready · On-Chain Voting
+  </div>
+</footer>
+
+<script>
+const API = "https://api.everestkush.com";
+const API_KEY = "CHANGE_ME";
+
+function show(id, type, html) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = `result show ${type}`;
+  el.innerHTML = html;
+}
+function row(k, v, cls='') {
+  return `<div class="rrow"><span class="rk">${k}</span><span class="rv ${cls}">${v}</span></div>`;
+}
+function short(s, n=28) { return s && s.length > n ? s.substring(0,n)+'…' : s; }
+
+async function api(path, opts={}) {
+  const headers = { "X-API-Key": API_KEY, ...(opts.headers || {}) };
+  opts = { ...opts, headers };
+  const r = await fetch(API + path, opts);
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
+  return d;
+}
+function post(path, body) {
+  const headers = { "Content-Type": "application/json", "X-API-Key": API_KEY };
+  return fetch(API + path, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(body)
+  }).then(r => r.json().then(d => ({ ok: r.ok, data: d })));
+}
+
+function switchTab(el, panelId) {
+  const scope = el.parentElement;
+  scope.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById(panelId);
+  if (panel) {
+    const container = panel.parentElement;
+    container.querySelectorAll(':scope > .tab-panel').forEach(p => p.classList.remove('active'));
+    panel.classList.add('active');
+  }
+  el.classList.add('active');
+}
+
+function updateFeePreview() {
+  const amt = parseFloat(document.getElementById('send-amount').value) || 0;
+  const el = document.getElementById('fee-preview');
+  el.textContent = amt > 0
+    ? `Fee: ${(amt*0.001).toFixed(4)} EKUSH (0.1%)  ·  Total: ${(amt*1.001).toFixed(4)} EKUSH`
+    : '';
+}
+
+function updateOpReturnCounter() {
+  const val = document.getElementById('opreturn-data').value;
+  const bytes = new TextEncoder().encode(val).length;
+  const el = document.getElementById('opreturn-counter');
+  el.textContent = `${bytes} / 80 bytes`;
+  el.style.color = bytes > 80 ? 'var(--red-light)' : 'var(--text3)';
+}
+
+function updateTimelockLabel() {
+  const type = document.getElementById('timelock-type').value;
+  document.getElementById('timelock-input-label').textContent =
+    type === 'cltv' ? 'Lock Until Block Height' : 'Lock For N Blocks';
+  document.getElementById('timelock-value').placeholder =
+    type === 'cltv' ? 'e.g. 1000' : 'e.g. 10';
+}
+
+// VOTING FUNCTIONS
+async function registerVoter() {
+  const wallet = document.getElementById('voter-wallet').value.trim();
+  if (!wallet) { alert('Please enter a wallet address'); return; }
+  try {
+    const { ok, data: d } = await post('/voter/register_with_wallet', { wallet_address: wallet });
+    if (ok) {
+      show('voter-register-result', 'ok',
+        row('Status', 'Registered Successfully!', 'hi') +
+        row('Voter ID', short(d.voter_id, 24)) +
+        row('Public Key', short(d.public_key, 24)) +
+        `<div class="secret-box" style="margin-top:0.5rem;">⚠️ SAVE THIS PRIVATE KEY: ${d.private_key}</div>` +
+        row('Warning', 'This key is NOT stored on server', 'gold')
+      );
+    } else {
+      show('voter-register-result', 'err', d.error || 'Registration failed');
+    }
+  } catch(e) { show('voter-register-result', 'err', e.message); }
+}
+
+async function checkVoterStatus() {
+  const wallet = document.getElementById('check-wallet').value.trim();
+  if (!wallet) { alert('Please enter a wallet address'); return; }
+  try {
+    const d = await api(`/voter/check_by_wallet?wallet=${encodeURIComponent(wallet)}`);
+    if (d.registered) {
+      show('voter-check-result', 'ok',
+        row('Registered', 'Yes ✓', 'hi') +
+        row('Voter ID', short(d.voter_id, 24)) +
+        row('Has Voted', d.has_voted ? 'Yes' : 'No') +
+        (d.choice ? row('Choice', d.choice) : '')
+      );
+    } else {
+      show('voter-check-result', 'info', 'This wallet is not registered. Click "Register Wallet" above to register.');
+    }
+  } catch(e) { show('voter-check-result', 'err', e.message); }
+}
+
+async function castVote() {
+  const voterId = document.getElementById('vote-voterid').value.trim();
+  const privKey = document.getElementById('vote-privkey').value.trim();
+  const choice = document.getElementById('vote-choice').value;
+  if (!voterId || !privKey) { alert('Please enter Voter ID and Private Key'); return; }
+  try {
+    const { ok, data: d } = await post('/vote/cast', { voter_id: voterId, private_key: privKey, choice });
+    if (ok) {
+      show('vote-cast-result', 'ok',
+        row('Status', 'Vote Cast Successfully!', 'hi') +
+        row('Choice', choice) +
+        row('Transaction', short(d.tx_hash || 'confirmed', 32)) +
+        row('On-Chain', '✓ Verified')
+      );
+      loadVoteResults();
+    } else {
+      show('vote-cast-result', 'err', d.error || 'Vote failed');
+    }
+  } catch(e) { show('vote-cast-result', 'err', e.message); }
+}
+
+async function loadVoteResults() {
+  const container = document.getElementById('results-container');
+  if (!container) return;
+  try {
+    const d = await api('/vote/results');
+    if (d.total === 0) {
+      container.innerHTML = '<div style="text-align: center; color: var(--text3);">No votes cast yet. Be the first to vote!</div>';
+      return;
+    }
+    let html = '';
+    for (const [option, count] of Object.entries(d.votes)) {
+      const percentage = d.total > 0 ? ((count / d.total) * 100).toFixed(1) : 0;
+      html += `<div class="vote-stat">
+        <div class="value">${count}</div>
+        <div class="label">${option.replace('_', ' ').toUpperCase()}</div>
+        <div style="font-size:0.7rem;color:var(--green);">${percentage}%</div>
+      </div>`;
+    }
+    html += `<div class="vote-stat"><div class="value">${d.total}</div><div class="label">TOTAL VOTES</div></div>`;
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<div style="text-align: center; color: var(--red-light);">Error loading results: ${e.message}</div>`;
+  }
+}
+
+// Existing wallet functions (keep from original)
+async function generateMnemonic() {
+  const words = document.getElementById('mnemonic-words').value;
+  try {
+    const d = await api(`/wallet/bip39/generate?words=${words}`);
+    const ws = d.mnemonic.split(' ');
+    const grid = ws.map((w,i) =>
+      `<div class="mnemonic-word"><span class="wi">${i+1}</span>${w}</div>`
+    ).join('');
+    show('mnemonic-result', 'ok',
+      `<div class="mnemonic-grid">${grid}</div>` +
+      row('Word Count', d.word_count) +
+      row('Standard', 'BIP39') +
+      `<div class="warn-box" style="margin-top:0.75rem;">⚠️ Write these words on paper. Store offline. Anyone with these words controls your funds.</div>`
+    );
+  } catch(e) { show('mnemonic-result', 'err', e.message); }
+}
+
+async function restoreWallet() {
+  const mnemonic = document.getElementById('restore-mnemonic').value.trim();
+  if (!mnemonic) return;
+  try {
+    const { ok, data: d } = await post('/wallet/bip39/restore', { mnemonic });
+    if (ok) {
+      show('restore-result', 'ok',
+        row('Status', 'Restored', 'hi') +
+        row('Master Address', short(d.master_address, 32)) +
+        `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">XPUB (shareable)</div>` +
+        `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.2rem;">${d.xpub}</div>` +
+        `<div class="warn-box" style="margin-top:0.75rem;">⚠️ xprv is your master private key. Never share it.</div>`
+      );
+    } else { show('restore-result', 'err', d.error || 'Restore failed'); }
+  } catch(e) { show('restore-result', 'err', e.message); }
+}
+
+async function generateAddresses() {
+  const count = document.getElementById('address-count').value;
+  try {
+    const d = await api(`/wallet/hd/addresses/${count}`);
+    let html = `<div style="margin-bottom:0.6rem;font-size:0.65rem;color:var(--text3);">Seed: ${short(d.mnemonic, 50)}</div>`;
+    d.addresses.forEach(a => {
+      html += `<div style="padding:0.45rem 0;border-bottom:1px solid var(--border);">
+        <span style="color:var(--text3);margin-right:0.5rem;">#${a.index}</span>${a.address}
+        <span style="color:var(--text3);font-size:0.65rem;margin-left:0.5rem;">${a.path}</span>
+      </div>`;
+    });
+    show('addresses-result', 'info', html);
+  } catch(e) { show('addresses-result', 'err', e.message); }
+}
+
+async function getXpub() {
+  try {
+    const d = await api('/wallet/hd/xpub');
+    show('xpub-result', 'info',
+      `<div style="word-break:break-all;margin-bottom:0.6rem;">${d.xpub}</div>` +
+      row('Type', 'Extended Public Key') +
+      `<div class="warn-box" style="margin-top:0.6rem;">🔓 Safe to share. Cannot spend — only view.</div>`
+    );
+  } catch(e) { show('xpub-result', 'err', e.message); }
+}
+
+async function getPaymentCode() {
+  try {
+    const d = await api('/wallet/bip47/payment-code');
+    show('paymentcode-result', 'ok',
+      row('Payment Code', short(d.payment_code, 40)) +
+      row('Standard', 'BIP47') +
+      row('Reusable', 'Yes — no address reuse on-chain') +
+      `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.6rem;color:var(--text2);">${d.payment_code}</div>`
+    );
+  } catch(e) { show('paymentcode-result', 'err', e.message); }
+}
+
+async function rotateKeys() {
+  const pk = document.getElementById('rotate-privkey').value.trim();
+  if (!pk) return;
+  try {
+    const { ok, data: d } = await post('/wallet/rotate', { private_key: pk });
+    if (ok) {
+      show('rotate-result', 'ok',
+        row('Status', 'Keys Rotated', 'hi') +
+        row('New Address', d.new_address) +
+        row('Old History', 'Preserved')
+      );
+    } else { show('rotate-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('rotate-result', 'err', e.message); }
+}
+
+async function createWallet() {
+  try {
+    const d = await api('/wallet/new');
+    show('wallet-result', 'info',
+      row('Address', d.address) +
+      row('Public Key', d.public_key) +
+      `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">PRIVATE KEY — COPY NOW</div>` +
+      `<div class="secret-box">${d.private_key}</div>`
+    );
+  } catch(e) { show('wallet-result', 'err', e.message); }
+}
+
+async function checkBalance() {
+  const addr = document.getElementById('balance-address').value.trim();
+  if (!addr) return;
+  try {
+    const d = await api(`/balance/${addr}`);
+    show('balance-result', d.balance > 0 ? 'ok' : 'info',
+      row('Address', short(d.address, 24)) +
+      row('Balance', `${(d.balance / 1000000).toLocaleString()} EKUSH`, 'hi') +
+      row('UTXO Count', d.utxo_count || '—') +
+      row('Lookup', 'O(1) chainstate', 'blue')
+    );
+  } catch(e) { show('balance-result', 'err', e.message); }
+}
+
+async function sendTransaction() {
+  const pk  = document.getElementById('send-privkey').value.trim();
+  const to  = document.getElementById('send-recipient').value.trim();
+  const amt = parseFloat(document.getElementById('send-amount').value);
+  if (!pk || !to || !amt) { alert('Fill all fields'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction', { private_key: pk, recipient: to, amount: amt });
+    if (ok) {
+      show('send-result', 'ok',
+        row('Status', 'Added to mempool', 'hi') +
+        row('TX Hash', short(d.hash, 32)) +
+        row('Amount', `${amt} EKUSH`) +
+        row('Fee', `${(amt*0.001).toFixed(4)} EKUSH`)
+      );
+    } else { show('send-result', 'err', d.error || 'Transaction failed'); }
+  } catch(e) { show('send-result', 'err', e.message); }
+}
+
+async function loadUTXOs() {
+  const addr = document.getElementById('coincontrol-address').value.trim();
+  if (!addr) { alert('Enter an address'); return; }
+  try {
+    const d = await api(`/utxos/${addr}`);
+    if (!d.utxos || !d.utxos.length) {
+      show('utxo-list', 'info', 'No UTXOs found for this address.');
+      return;
+    }
+    let html = '';
+    d.utxos.forEach((u, i) => {
+      html += `<div style="padding:0.5rem 0;border-bottom:1px solid var(--border);">
+        <div class="rrow"><span class="rk">#${i+1} Amount</span><span class="rv hi">${u.amount} EKUSH</span></div>
+        <div class="rrow"><span class="rk">TX</span><span class="rv">${short(u.txid, 30)}</span></div>
+        <div class="rrow"><span class="rk">Vout</span><span class="rv">${u.vout}</span></div>
+        <div class="rrow"><span class="rk">Confirmations</span><span class="rv">${u.confirmations || '—'}</span></div>
+      </div>`;
+    });
+    show('utxo-list', 'info', html);
+  } catch(e) { show('utxo-list', 'err', e.message); }
+}
+
+async function estimateFee() {
+  const target = document.getElementById('fee-target').value;
+  try {
+    const d = await api(`/fee/estimate?target=${target}`);
+    show('feeest-result', 'ok',
+      row('Target Blocks', target) +
+      row('Recommended Fee', `${d.fee_rate} sat/byte`, 'hi') +
+      row('Estimated Wait', d.estimated_wait || `~${target * 3}s`) +
+      row('Method', 'Historical block analysis')
+    );
+  } catch(e) { show('feeest-result', 'err', e.message); }
+}
+
+async function generateP2WPKH() {
+  const pubkey = document.getElementById('p2wpkh-pubkey').value.trim();
+  if (!pubkey) { alert('Enter a public key'); return; }
+  try {
+    const { ok, data: d } = await post('/wallet/segwit/p2wpkh', { public_key: pubkey });
+    if (ok) {
+      show('p2wpkh-result', 'ok',
+        row('P2WPKH Address', d.address, 'blue') +
+        row('Witness Version', 'v0') +
+        row('Standard', 'BIP141') +
+        row('Malleability', 'Fixed')
+      );
+    } else { show('p2wpkh-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('p2wpkh-result', 'err', e.message); }
+}
+
+async function generateP2WSH() {
+  const script = document.getElementById('p2wsh-script').value.trim();
+  if (!script) { alert('Enter a witness script'); return; }
+  try {
+    const { ok, data: d } = await post('/wallet/segwit/p2wsh', { witness_script: script });
+    if (ok) {
+      show('p2wsh-result', 'ok',
+        row('P2WSH Address', d.address, 'blue') +
+        row('Script Hash', short(d.script_hash, 36)) +
+        row('Standard', 'BIP141') +
+        row('Witness Version', 'v0')
+      );
+    } else { show('p2wsh-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('p2wsh-result', 'err', e.message); }
+}
+
+async function generateTaprootAddress() {
+  const key = document.getElementById('taproot-key').value.trim();
+  const script = document.getElementById('taproot-script').value.trim();
+  if (!key) { alert('Enter an internal key'); return; }
+  try {
+    const body = { internal_key: key };
+    if (script) body.tapscript = script;
+    const { ok, data: d } = await post('/wallet/taproot/address', body);
+    if (ok) {
+      show('taproot-result', 'ok',
+        row('Taproot Address', d.address, 'purple') +
+        row('Witness Version', 'v1') +
+        row('Spend Type', d.spend_type || (script ? 'Key + Script path' : 'Key path only')) +
+        row('Standard', 'BIP341')
+      );
+    } else { show('taproot-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('taproot-result', 'err', e.message); }
+}
+
+async function schnorrSign() {
+  const pk  = document.getElementById('schnorr-privkey').value.trim();
+  const msg = document.getElementById('schnorr-message').value.trim();
+  if (!pk || !msg) { alert('Fill all fields'); return; }
+  try {
+    const { ok, data: d } = await post('/wallet/schnorr/sign', { private_key: pk, message: msg });
+    if (ok) {
+      show('schnorr-result', 'ok',
+        row('Signature', short(d.signature, 40), 'purple') +
+        row('Public Key', short(d.public_key, 36)) +
+        row('Algorithm', 'BIP340 Schnorr') +
+        row('Aggregatable', 'Yes')
+      );
+    } else { show('schnorr-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('schnorr-result', 'err', e.message); }
+}
+
+async function executeScript() {
+  const lock   = document.getElementById('vm-lock').value.trim();
+  const unlock = document.getElementById('vm-unlock').value.trim();
+  if (!lock) { alert('Enter a locking script'); return; }
+  try {
+    const { ok, data: d } = await post('/script/execute', { scriptpubkey: lock, scriptsig: unlock });
+    if (ok) {
+      const passed = d.result === true || d.valid === true;
+      show('vm-result', passed ? 'ok' : 'err',
+        row('Result', passed ? 'VALID ✓' : 'INVALID ✗', passed ? 'hi' : 'red') +
+        row('Stack', d.final_stack || '[]') +
+        row('Opcodes Executed', d.opcodes_executed || '—') +
+        row('VM', '84-opcode Script Engine')
+      );
+    } else { show('vm-result', 'err', d.error || 'Script execution failed'); }
+  } catch(e) { show('vm-result', 'err', e.message); }
+}
+
+async function submitOpReturn() {
+  const pk   = document.getElementById('opreturn-privkey').value.trim();
+  const data = document.getElementById('opreturn-data').value.trim();
+  if (!pk || !data) { alert('Fill all fields'); return; }
+  const bytes = new TextEncoder().encode(data).length;
+  if (bytes > 80) { alert('Data exceeds 80 bytes'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction/opreturn', { private_key: pk, data });
+    if (ok) {
+      show('opreturn-result', 'ok',
+        row('Status', 'Success', 'hi') +
+        row('TX Hash', short(d.hash || d.txid, 32)) +
+        row('Data Embedded', d.op_return || data) +
+        row('Bytes', bytes + ' / 80') +
+        row('UTXO Set', 'Pruned (not stored)')
+      );
+    } else { show('opreturn-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('opreturn-result', 'err', e.message); }
+}
+
+async function createMultisig() {
+  const m = parseInt(document.getElementById('multisig-m').value);
+  const keys = document.getElementById('multisig-keys').value
+    .split('\n').map(k => k.trim()).filter(Boolean);
+  if (!keys.length) { alert('Enter public keys'); return; }
+  try {
+    const { ok, data: d } = await post('/wallet/multisig', { required: m, public_keys: keys });
+    if (ok) {
+      show('multisig-result', 'ok',
+        row('Address', d.address) +
+        row('Type', d.type || 'P2SH_Multisig') +
+        row('Required Sigs', `${d.required_signatures || d.required} of ${d.total_keys || d.total}`) +
+        row('Standard', d.standard || 'BIP16') +
+        `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">Redeem Script</div>` +
+        `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.2rem;">${d.redeem_script}</div>`
+      );
+    } else { show('multisig-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('multisig-result', 'err', e.message); }
+}
+
+async function createTimelock() {
+  const pk     = document.getElementById('timelock-privkey').value.trim();
+  const to     = document.getElementById('timelock-recipient').value.trim();
+  const amount = parseFloat(document.getElementById('timelock-amount').value);
+  const type   = document.getElementById('timelock-type').value;
+  const value  = parseInt(document.getElementById('timelock-value').value);
+  if (!pk || !to || !amount || !value) { alert('Fill all fields'); return; }
+  const body = { private_key: pk, recipient: to, amount };
+  if (type === 'cltv') body.lock_until = value; else body.lock_for = value;
+  try {
+    const { ok, data: d } = await post('/transaction/timelock', body);
+    if (ok) {
+      show('timelock-result', 'ok',
+        row('Status', 'Success', 'hi') +
+        row('TX Hash', short(d.txid, 32)) +
+        row('Lock Type', d.lock_type) +
+        row('Spendable At Block', d.spendable_at_block) +
+        row('Blocks Remaining', d.blocks_remaining) +
+        row('Standard', d.standard)
+      );
+    } else { show('timelock-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('timelock-result', 'err', e.message); }
+}
+
+async function submitRBF() {
+  const txhash = document.getElementById('rbf-txhash').value.trim();
+  const pk     = document.getElementById('rbf-privkey').value.trim();
+  const fee    = parseFloat(document.getElementById('rbf-fee').value);
+  if (!txhash || !pk || !fee) { alert('Fill all fields'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction/rbf', { txid: txhash, private_key: pk, new_fee: fee });
+    if (ok) {
+      show('rbf-result', 'ok',
+        row('Status', 'Replaced', 'hi') +
+        row('New TX Hash', short(d.new_txid, 32)) +
+        row('Old TX Hash', short(txhash, 32)) +
+        row('New Fee', `${fee} EKUSH`) +
+        row('Standard', 'BIP125')
+      );
+    } else { show('rbf-result', 'err', d.error || 'RBF failed'); }
+  } catch(e) { show('rbf-result', 'err', e.message); }
+}
+
+async function createPSBT() {
+  const to  = document.getElementById('psbt-recipient').value.trim();
+  const amt = parseFloat(document.getElementById('psbt-amount').value);
+  if (!to || !amt) { alert('Fill all fields'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction/psbt/create', { recipient: to, amount: amt });
+    if (ok) {
+      show('psbt-create-result', 'ok',
+        row('PSBT Created', 'Awaiting signatures', 'gold') +
+        `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.6rem;">${d.psbt}</div>` +
+        row('Standard', 'BIP174')
+      );
+    } else { show('psbt-create-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('psbt-create-result', 'err', e.message); }
+}
+
+async function signPSBT() {
+  const psbt = document.getElementById('psbt-sign-data').value.trim();
+  const pk   = document.getElementById('psbt-sign-key').value.trim();
+  if (!psbt || !pk) { alert('Fill all fields'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction/psbt/sign', { psbt, private_key: pk });
+    if (ok) {
+      show('psbt-sign-result', 'ok',
+        row('Status', 'Signed', 'hi') +
+        row('Signatures', `${d.signatures_added} added`) +
+        `<div style="word-break:break-all;font-size:0.68rem;margin-top:0.6rem;">${d.signed_psbt}</div>`
+      );
+    } else { show('psbt-sign-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('psbt-sign-result', 'err', e.message); }
+}
+
+async function finalizePSBT() {
+  const psbt = document.getElementById('psbt-final-data').value.trim();
+  if (!psbt) { alert('Paste signed PSBT'); return; }
+  try {
+    const { ok, data: d } = await post('/transaction/psbt/finalize', { psbt });
+    if (ok) {
+      show('psbt-final-result', 'ok',
+        row('Status', 'Finalized & Broadcast', 'hi') +
+        row('TX Hash', short(d.txid, 32)) +
+        row('Standard', 'BIP174')
+      );
+    } else { show('psbt-final-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('psbt-final-result', 'err', e.message); }
+}
+
+async function fetchDustLimit() {
+  try {
+    const d = await api('/transaction/dustlimit');
+    show('dust-result', 'info',
+      row('Dust Limit', `${d.dust_limit_satoshis || (d.dust_limit * 1e8)} satoshis`) +
+      row('In EKUSH', d.dust_limit_ekush || d.dust_limit) +
+      row('OP_RETURN Value', '0 (exempt)') +
+      row('Policy', d.policy || d.description) +
+      row('Standard', d.standard)
+    );
+  } catch(e) { show('dust-result', 'err', e.message); }
+}
+
+async function loadPeers() {
+  const container = document.getElementById('peers-list');
+  try {
+    const d = await api('/p2p/peers');
+    document.getElementById('node-peers').textContent = d.peers ? d.peers.length : '0';
+    if (!d.peers || !d.peers.length) {
+      container.innerHTML = '<div style="color:var(--text3);font-family:var(--font-mono);font-size:0.72rem;padding:0.5rem 0;">No connected peers</div>';
+      return;
+    }
+    container.innerHTML = d.peers.map(p => `
+      <div class="peer-row">
+        <span class="peer-ip">${p.address || p.ip}</span>
+        <span class="peer-version">${p.version || '—'}</span>
+        <span class="peer-ping">${p.latency || p.ping || '—'}ms</span>
+        <span class="peer-score">score: ${p.misbehavior_score || 0}</span>
+      </div>
+    `).join('');
+  } catch(e) {
+    container.innerHTML = `<div style="color:var(--red-light);font-family:var(--font-mono);font-size:0.72rem;">${e.message}</div>`;
+  }
+}
+
+async function getDandelionStatus() {
+  try {
+    const d = await api('/p2p/dandelion/status');
+    show('dandelion-result', 'ok',
+      row('Status', d.enabled ? 'Active' : 'Disabled', d.enabled ? 'hi' : 'red') +
+      row('Stem Phase', d.stem_phase || '—') +
+      row('Fluff Phase', d.fluff_phase || '—') +
+      row('Origin IP Masking', 'Enabled', 'hi') +
+      row('Standard', 'BIP156')
+    );
+  } catch(e) { show('dandelion-result', 'err', e.message); }
+}
+
+async function getSyncStatus() {
+  try {
+    const d = await api('/p2p/sync/status');
+    show('sync-result', 'info',
+      row('Sync Mode', d.headers_first ? 'Headers-First' : 'Full Block', 'blue') +
+      row('Headers Synced', d.headers_synced || '—') +
+      row('Blocks Synced', d.blocks_synced || '—') +
+      row('Sync Progress', d.progress ? `${(d.progress*100).toFixed(1)}%` : '—')
+    );
+  } catch(e) { show('sync-result', 'err', e.message); }
+}
+
+async function addPeer() {
+  const addr = document.getElementById('add-peer-addr').value.trim();
+  if (!addr) return;
+  try {
+    const { ok, data: d } = await post('/p2p/peers/add', { address: addr });
+    if (ok) {
+      show('addpeer-result', 'ok', row('Status', 'Peer Added', 'hi') + row('Address', addr));
+    } else { show('addpeer-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('addpeer-result', 'err', e.message); }
+}
+
+async function loadNodeHealth() {
+  try {
+    const d = await api('/node/health');
+    const healthy = d.status === 'healthy' || d.healthy;
+    document.getElementById('node-health').textContent = healthy ? 'HEALTHY' : 'DEGRADED';
+    document.getElementById('node-health').className = 'node-stat-val ' + (healthy ? 'green' : 'red');
+    if (d.tip_age !== undefined) document.getElementById('node-tip-age').textContent = d.tip_age;
+    show('health-result', healthy ? 'ok' : 'err',
+      row('Status', healthy ? 'Healthy' : 'Degraded', healthy ? 'hi' : 'red') +
+      row('DB Integrity', d.db_integrity ? '✓ OK' : '✗ ERROR', d.db_integrity ? 'hi' : 'red') +
+      row('Chain Valid', d.chain_valid ? '✓' : '✗', d.chain_valid ? 'hi' : 'red') +
+      row('Tip Age', `${d.tip_age || '—'}s`) +
+      row('Peers', d.peer_count || '—') +
+      row('Uptime', d.uptime || '—')
+    );
+  } catch(e) { show('health-result', 'err', e.message); }
+}
+
+async function loadLogs() {
+  const level = document.getElementById('log-level').value;
+  try {
+    const d = await api(`/node/logs?level=${level}&limit=20`);
+    if (!d.logs || !d.logs.length) {
+      show('logs-result', 'info', 'No log entries found.');
+      return;
+    }
+    let html = '';
+    d.logs.forEach(l => {
+      const col = l.level === 'ERROR' ? 'red' : l.level === 'WARN' ? 'gold' : '';
+      html += `<div style="padding:0.3rem 0;border-bottom:1px solid var(--border);font-size:0.68rem;">
+        <span class="rv ${col}" style="margin-right:0.5rem;">[${l.level}]</span>
+        <span style="color:var(--text3);margin-right:0.5rem;">${l.timestamp || ''}</span>
+        <span>${l.message}</span>
+      </div>`;
+    });
+    show('logs-result', 'info', html);
+  } catch(e) { show('logs-result', 'err', e.message); }
+}
+
+async function getReorgStatus() {
+  try {
+    const d = await api('/node/reorg/status');
+    show('reorg-result', 'info',
+      row('Last Reorg Depth', d.last_reorg_depth || '0 blocks') +
+      row('Max Handled', '1000+ blocks') +
+      row('Recovery Status', d.recovery_status || 'Standby', 'hi') +
+      row('Chain Tip', short(d.chain_tip, 36))
+    );
+  } catch(e) { show('reorg-result', 'err', e.message); }
+}
+
+async function getPruningStatus() {
+  try {
+    const d = await api('/node/pruning/status');
+    show('pruning-result', 'info',
+      row('Mode', d.pruning_enabled ? 'Pruning (UTXO only)' : 'Full Archive', d.pruning_enabled ? 'gold' : 'blue') +
+      row('DB Size', d.db_size || '—') +
+      row('UTXO Set Size', d.utxo_set_size || '—') +
+      row('Blocks Pruned', d.blocks_pruned || '0')
+    );
+  } catch(e) { show('pruning-result', 'err', e.message); }
+}
+
+async function regtestMine() {
+  const blocks = parseInt(document.getElementById('regtest-blocks').value) || 1;
+  const addr   = document.getElementById('regtest-address').value.trim();
+  try {
+    const body = { blocks };
+    if (addr) body.reward_address = addr;
+    const { ok, data: d } = await post('/node/regtest/mine', body);
+    if (ok) {
+      show('regtest-result', 'ok',
+        row('Blocks Mined', d.blocks_mined || blocks, 'hi') +
+        row('New Chain Height', d.chain_height || '—') +
+        row('Mode', 'Regtest / Simnet') +
+        row('Network', 'Local only')
+      );
+    } else { show('regtest-result', 'err', d.error || 'Failed'); }
+  } catch(e) { show('regtest-result', 'err', e.message); }
+}
+
+async function callRPC() {
+  const method = document.getElementById('rpc-method').value;
+  const params = document.getElementById('rpc-params').value.trim();
+  try {
+    const body = { method, params: params ? JSON.parse(params) : [] };
+    const { ok, data: d } = await post('/rpc', body);
+    if (ok) {
+      show('rpc-result', 'info',
+        `<div style="font-size:0.68rem;color:var(--text3);margin-bottom:0.4rem;">${method}</div>` +
+        `<pre style="white-space:pre-wrap;word-break:break-all;font-size:0.68rem;color:var(--text);">${JSON.stringify(d.result, null, 2)}</pre>`
+      );
+    } else { show('rpc-result', 'err', d.error || 'RPC failed'); }
+  } catch(e) { show('rpc-result', 'err', e.message); }
+}
+
+async function loadMetrics() {
+  try {
+    const r = await fetch(API + '/metrics');
+    const text = await r.text();
+    const lines = text.split('\n').filter(l => l && !l.startsWith('#')).slice(0, 20);
+    show('metrics-result', 'info',
+      `<pre style="white-space:pre-wrap;font-size:0.65rem;color:var(--text2);">${lines.join('\n')}</pre>` +
+      `<div style="margin-top:0.6rem;font-size:0.65rem;color:var(--text3);">Showing first 20 metrics. Full endpoint: /metrics</div>`
+    );
+  } catch(e) { show('metrics-result', 'err', e.message); }
+}
+
+async function loadExplorer() {
+  const container = document.getElementById('explorer-blocks');
+  try {
+    const d = await api('/chain');
+    if (!d.chain || !d.chain.length) {
+      container.innerHTML = '<div style="color:var(--text3);text-align:center;padding:2rem;">No blocks yet</div>';
+      return;
+    }
+    const validBadge = d.valid
+      ? `<span style="color:var(--green);">● VALID</span>`
+      : `<span style="color:var(--red-light);">● INVALID</span>`;
+    let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;font-family:var(--font-mono);font-size:0.72rem;">
+      <span style="color:var(--text2);">${d.length} blocks</span>${validBadge}
+    </div>`;
+    [...d.chain].reverse().forEach(b => {
+      html += `<div class="block-row">
+        <div class="block-num">#${b.index}</div>
+        <div>
+          <div class="block-hash">${short(b.hash, 44)}</div>
+          ${b.validator ? `<div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);margin-top:0.2rem;">Validator: ${short(b.validator, 20)}</div>` : ''}
+        </div>
+        <div style="text-align:right;">
+          <div class="block-txs">${b.transactions} TX</div>
+          ${b.weight ? `<div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-top:0.2rem;">${b.weight} WU</div>` : ''}
+        </div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<div style="color:var(--red-light);font-family:var(--font-mono);font-size:0.78rem;">Cannot reach node: ${e.message}</div>`;
+  }
+}
+
+async function explorerSearch() {
+  const q = document.getElementById('explorer-search').value.trim();
+  if (!q) return;
+  const container = document.getElementById('explorer-blocks');
+  try {
+    const d = await api(`/search?q=${encodeURIComponent(q)}`);
+    if (d.type === 'block') {
+      container.innerHTML = `<div class="block-row">
+        <div class="block-num">#${d.result.index}</div>
+        <div><div class="block-hash">${d.result.hash}</div></div>
+        <div class="block-txs">${d.result.transactions} TX</div>
+      </div>`;
+    } else if (d.type === 'transaction') {
+      container.innerHTML = `<div class="card">
+        ${row('TX Hash', short(d.result.hash, 40))}
+        ${row('Block', d.result.block_index)}
+        ${row('Amount', d.result.amount + ' EKUSH')}
+        ${row('Status', d.result.confirmed ? 'Confirmed' : 'Pending')}
+      </div>`;
+    } else {
+      container.innerHTML = `<div style="color:var(--text3);font-family:var(--font-mono);padding:1rem;">No results for: ${q}</div>`;
+    }
+  } catch(e) { container.innerHTML = `<div style="color:var(--red-light);font-family:var(--font-mono);">Search error: ${e.message}</div>`; }
+}
+
+async function loadWalletCount() {
+  try {
+    const res = await fetch(`${API}/wallet/count`);
+    const data = await res.json();
+    const walletEl = document.getElementById('stat-wallets');
+    if (walletEl) walletEl.textContent = data.total_wallets || 0;
+  } catch(e) { console.warn('Wallet count error', e); }
+}
+
+async function loadStats() {
+  try {
+    const [stats, diff, supply, mempool, health] = await Promise.allSettled([
+      api('/stats'),
+      api('/difficulty'),
+      api('/supply'),
+      api('/mempool/stats'),
+      api('/node/health')
+    ]);
+
+    if (stats.status === 'fulfilled') {
+      const s = stats.value;
+      document.getElementById('stat-blocks').textContent  = s.chain_length;
+      document.getElementById('stat-pending').textContent = s.pending_transactions;
+      const statusEl = document.getElementById('stat-status');
+      statusEl.textContent = s.chain_valid ? 'VALID' : 'INVALID';
+      statusEl.className = 'ticker-val ' + (s.chain_valid ? 'green' : 'red');
+    }
+    if (diff.status === 'fulfilled') {
+      const d = diff.value;
+      document.getElementById('stat-difficulty').textContent = d.current_difficulty;
+      const nd = document.getElementById('net-diff');
+      if (nd) nd.textContent = d.current_difficulty;
+      const na = document.getElementById('net-adjust');
+      if (na) na.textContent = `${d.blocks_until_adjustment} blocks`;
+      const aw = document.getElementById('assumevalid-block');
+      if (aw) aw.textContent = d.assumevalid_block || '—';
+    }
+    if (supply.status === 'fulfilled') {
+      const s = supply.value;
+      document.getElementById('stat-supply').textContent = (s.circulating_supply/1e6).toFixed(1)+'M';
+      const hr = document.getElementById('halving-reward');
+      const hn = document.getElementById('halving-next');
+      const hb = document.getElementById('halving-blocks');
+      if (hr) hr.textContent = s.current_reward + ' EKUSH';
+      if (hn) hn.textContent = `#${s.next_halving_block}`;
+      if (hb) hb.textContent = s.blocks_to_next_halving;
+    }
+    if (mempool.status === 'fulfilled') {
+      const m = mempool.value;
+      const mp = document.getElementById('mempool-pending');
+      const mm = document.getElementById('mempool-max');
+      const mu = document.getElementById('mempool-usage');
+      if (mp) mp.textContent = m.pending_transactions;
+      if (mm) mm.textContent = m.max_size;
+      if (mu) mu.textContent = m.usage_percent.toFixed(1) + '%';
+    }
+    if (health.status === 'fulfilled') {
+      const h = health.value;
+      if (h.tip_age !== undefined) document.getElementById('node-tip-age').textContent = h.tip_age;
+      if (h.peer_count !== undefined) document.getElementById('node-peers').textContent = h.peer_count;
+      if (h.version) document.getElementById('node-version').textContent = h.version;
+      const bftEl = document.getElementById('bft-validators');
+      if (bftEl && h.validator_count) bftEl.textContent = `${h.validator_count}/21`;
+      const cwEl = document.getElementById('chainwork');
+      if (cwEl && h.chain_work) cwEl.textContent = h.chain_work;
+    }
+    
+    loadWalletCount();
+  } catch(e) { console.warn('Stats error', e); }
+}
+
+loadStats();
+loadExplorer();
+loadPeers();
+loadVoteResults();
+setInterval(loadStats, 15000);
+setInterval(loadExplorer, 15000);
+setInterval(loadWalletCount, 30000);
+setInterval(loadVoteResults, 10000);
+</script>
+</body>
+</html>
